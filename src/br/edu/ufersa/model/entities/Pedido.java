@@ -108,8 +108,23 @@ public class Pedido {
         System.out.println("Pedido não encontrado");
     }
 
-    public void addItem(ItemPedido ip){
+    public void adicionarItem(ItemPedido ip){
+        if (ip == null){
+            System.out.println("Item inválido");
+            return;
+        }
         itensPedido.add(ip);
+    }
+
+    public void removerItem(int id){
+        for (ItemPedido ip : itensPedido){
+            if(ip.getId() == id){
+                itensPedido.remove(ip);
+                System.out.println("Item removido com sucesso");
+                return;
+            }
+        }
+        System.out.println("Item não encontrado no pedido");
     }
 
     public static String gerarNota(Pedido p) {
