@@ -1,5 +1,7 @@
 package br.edu.ufersa.model.entities;
 
+import com.sun.jdi.ClassNotLoadedException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,10 +14,82 @@ public class SistemaAcaiteria {
 
     private List<Adicional>  adicionais;
     private List<Produto>  produtos;
+    private List<Cliente> clientes;
+    private List<Pedido> pedidos;
+
 
     public SistemaAcaiteria() {
         this.adicionais = Adicional.adicionais;
         this.produtos = Produto.produtos;
+        this.clientes = Cliente.getClientes();
+        this.pedidos = Pedido.getPedidos();
+    }
+
+    public List<Cliente> buscarClientes(String nome){
+        List<Cliente> filtrados = new ArrayList<>();
+
+        if(nome == null || nome.isEmpty()){
+            System.out.println("Nome não pode ser vazio!");
+            return filtrados;
+        }
+
+        for (Cliente c : clientes){
+            if(c.getNome().toLowerCase().contains(nome.toLowerCase())){
+                filtrados.add(c);
+            }
+        }
+        return filtrados;
+    }
+
+    public List<Pedido> buscarPedido(Cliente cliente){
+        List<Pedido> filtrados = new ArrayList<>();
+
+        if(cliente == null){
+            System.out.println("Cliente não pode ser vazio!");
+            return filtrados;
+        }
+
+        for(Pedido p : pedidos){
+            if(p.getCliente().getId() == cliente.getId()){
+                filtrados.add(p);
+            }
+        }
+        return filtrados;
+    }
+
+    public List<Pedido> buscarPedido(Produto produto){
+        List<Pedido> filtrados = new ArrayList<>();
+
+        if(produto == null){
+            System.out.println("Produto não pode ser vazio!");
+            return filtrados;
+        }
+
+        for(Pedido p : pedidos){
+            for(ItemPedido ip : p.getItensPedido()){
+                if(ip.getProduto().getId() == produto.getId()){
+                    filtrados.add(p);
+                    break;
+                }
+            }
+        }
+        return filtrados;
+    }
+
+    public List<Pedido> buscarPedido(LocalDate data){
+        List<Pedido> filtrados = new ArrayList<>();
+
+        if(data == null){
+            System.out.println("Data não pode ser vazio!");
+            return filtrados;
+        }
+
+        for(Pedido p : pedidos){
+            if(p.getData().equals(data)){
+                filtrados.add(p);
+            }
+        }
+        return filtrados;
     }
 
     public List<Adicional> buscarAdicionais(String nome){
@@ -121,5 +195,38 @@ public class SistemaAcaiteria {
 
         return relatorio.toString();
 
+    }
+
+    public String gerarRelatorioPedido(LocalDate inicio, LocalDate fim){
+        if(inicio == null || fim == null || inicio.isAfter(fim)){
+            return "Intervalo de datas inválido";
+        }
+
+        List<Pedido> filtrados = new ArrayList<>();
+        double totalFaturado = 0;
+
+        for(Pedido p : pedidos){
+            LocalDate data = p.getData();
+
+            if(data != null && !data.isBefore(inicio) && !data.isAfter(fim)){
+                filtrados.add(p);
+
+                for(ItemPedido ip : p.getItensPedido()){
+                    totalFaturado += ip.calcularValorItem();
+                }
+            }
+        }
+
+        String relatorio = "===== RELATÓRIO =====\n";
+        relatorio += "Período: " + inicio.format(FORMATO_DATA) + " até " + fim.format(FORMATO_DATA) + "\n";
+        relatorio += "Quantidade de pedidos: " + filtrados.size() + "\n";
+        relatorio += "Total faturado: R$ " + String.format("%.2f", totalFaturado) + "\n";
+        relatorio += "---------------------\n";
+
+        for(Pedido p : filtrados){
+            relatorio += Pedido.gerarNota(p) + "\n";
+        }
+
+        return relatorio;
     }
 }

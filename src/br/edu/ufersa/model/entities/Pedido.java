@@ -33,7 +33,7 @@ public class Pedido {
 
     public String getFormaPagamento() {return formaPagamento;}
 
-    public List<Pedido> getPedidos() {return pedidos;}
+    public static List<Pedido> getPedidos() {return pedidos;}
 
     public void setCliente(Cliente cliente) {
         if (cliente == null){
