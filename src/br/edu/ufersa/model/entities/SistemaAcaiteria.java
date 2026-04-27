@@ -48,6 +48,7 @@ public class SistemaAcaiteria {
         Map<Integer, Integer> qtdPorAdicional = new HashMap<>();
         Map<Integer, String> nomePorAdicional = new HashMap<>();
         Map<Integer, Double> valorPorAdicional = new HashMap<>();
+        Map<Integer, Integer> qtdEmEstoquePorAdicional = new HashMap<>();
 
         for(Pedido p: pedidos){
             if(p == null || p.getData() == null){
@@ -56,7 +57,7 @@ public class SistemaAcaiteria {
 
             LocalDate dataPedido = p.getData();
             boolean dentroDoPeriodo = !dataPedido.isBefore(inicio) && !dataPedido.isAfter(fim);
-            if(!dentroDoPeriodo || p.getPedidos() == null || p.getPedidos().isEmpty()){
+            if(!dentroDoPeriodo || p.getItensPedido() == null || p.getItensPedido().isEmpty()){
                 continue;
             }
 
@@ -77,7 +78,9 @@ public class SistemaAcaiteria {
 
                     int idAdicional = ad.getId();
                     int qtdComprada = item.getQuantidade();
+                    int qtdEmEstoque = ad.getQtdEstoque();
 
+                    qtdEmEstoquePorAdicional.put(idAdicional, qtdEmEstoque);
                     nomePorAdicional.put(idAdicional, ad.getNome());
                     qtdPorAdicional.put(idAdicional, (qtdPorAdicional.getOrDefault(idAdicional, 0) + qtdComprada));
                     valorPorAdicional.put(idAdicional, (valorPorAdicional.getOrDefault(idAdicional, 0.0) + ad.getPreco() * qtdComprada));
@@ -99,11 +102,13 @@ public class SistemaAcaiteria {
             String nome = nomePorAdicional.get(id);
             int quantidade = qtdPorAdicional.get(id);
             double valor = valorPorAdicional.get(id);
+            int estoque = qtdEmEstoquePorAdicional.get(id);
             totalGeral += valor;
 
             relatorio.append("ID: ").append(id)
                     .append(" | Nome: ").append(nome)
-                    .append(" | Qtd: ").append(quantidade)
+                    .append(" | Quantidade: ").append(quantidade)
+                    .append(" | Quantidade em estoque: ").append(estoque)
                     .append(" | Total: R$ ").append(String.format("%.2f", valor))
                     .append("\n");
         }
