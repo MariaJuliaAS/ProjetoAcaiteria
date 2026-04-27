@@ -1,12 +1,15 @@
 package br.edu.ufersa.model.entities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SistemaAcaiteria {
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     private List<Adicional>  adicionais;
     private List<Produto>  produtos;
 
@@ -94,7 +97,7 @@ public class SistemaAcaiteria {
 
         StringBuilder relatorio = new StringBuilder();
         relatorio.append("RELATORIO DE ADICIONAIS\n");
-        relatorio.append("Periodo: ").append(inicio).append(" ate ").append(fim).append("\n");
+        relatorio.append("Periodo: ").append(inicio.format(FORMATO_DATA)).append(" ate ").append(fim.format(FORMATO_DATA)).append("\n");
         relatorio.append("--------------------------------\n");
 
         double totalGeral = 0.0;
