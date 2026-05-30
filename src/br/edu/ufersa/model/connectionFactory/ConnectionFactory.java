@@ -10,14 +10,14 @@ import java.util.Properties;
 public class ConnectionFactory {
 
     public static Connection getConnection(){
-            try{
-                Properties props = loadProperties();
-                String url = props.getProperty("dburl");
-                 return DriverManager.getConnection(url, props);
-            }catch (SQLException e){
-                throw new RuntimeException(e);
-            }
+        try{
+            Properties props = loadProperties();
+            String url = props.getProperty("dburl");
+            return DriverManager.getConnection(url, props);
+        }catch (SQLException e){
+            throw new RuntimeException(e);
         }
+    }
 
     private static Properties loadProperties(){
         try(FileInputStream fs = new FileInputStream("db.properties")){
@@ -29,4 +29,3 @@ public class ConnectionFactory {
         }
     }
 }
-

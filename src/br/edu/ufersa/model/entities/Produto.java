@@ -25,6 +25,7 @@ public class Produto {
     public int getId() {
         return id;
     }
+    public void setId(int id) {this.id = id;}
 
     public String getNome() {
         return nome;
@@ -54,87 +55,8 @@ public class Produto {
         return adicionaisDisponiveis;
     }
 
-    public static void cadastrarProduto(Produto p){
-        if(p == null){
-            System.out.println("Produto inválido");
-            return;
-        }
-
-        for(Produto pd: produtos){
-            if(pd.getId() == p.getId()){
-                System.out.println("Produto existente");
-                return;
-            }
-        }
-
-        produtos.add(p);
-        System.out.println("Produto cadastrado com sucesso");
-    }
-
-    public static void editarProduto(Produto p){
-        for(Produto pd: produtos){
-            if(pd.getId() == p.getId()){
-
-                if (p.getNome() == null || p.getNome().isEmpty()) {
-                    System.out.println("Nome inválido");
-                    return;
-                }
-
-                if(p.getPreco() <= 0){
-                    System.out.println("Preço inválido");
-                    return;
-                }
-
-                pd.setNome(p.getNome());
-                pd.setPreco(p.getPreco());
-
-                System.out.println("Produto atualizado");
-
-            }
-        }
-    }
-
-    public static void excluirProduto(int id){
-        for (Produto pd: produtos){
-            if(pd.getId() == id){
-                produtos.remove(pd);
-                System.out.println("Produto removido com sucesso");
-                return;
-            }
-        }
-    }
-
-    public void adicionarAdicional(Adicional a) {
-        if(a == null){
-            System.out.println("Adicional inválido");
-            return;
-        }
-
-        for (Adicional ad: adicionaisDisponiveis){
-            if (ad.getId() == a.getId()) {
-                System.out.println("Adicional já adicionado");
-                return;
-            }
-        }
-
-        if (a.getQtdEstoque() <= 0) {
-            System.out.println("Adicional sem estoque");
-            return;
-        }
-
-        adicionaisDisponiveis.add(a);
-        System.out.println("Adicional adicionado ao produto");
-    }
-
-    public void removerAdicional(int id){
-        for (Adicional ad: adicionaisDisponiveis){
-            if(ad.getId() == id){
-                adicionaisDisponiveis.remove(ad);
-                System.out.println("Adicional removido com sucesso");
-                return;
-            }
-        }
-        System.out.println("Adicional não encontrado no produto");
+    public void setAdicionaisDisponiveis(List<Adicional> adicionaisDisponiveis) {
+        this.adicionaisDisponiveis = adicionaisDisponiveis;
     }
 
     @Override

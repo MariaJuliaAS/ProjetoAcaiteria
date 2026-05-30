@@ -22,7 +22,7 @@ public class Admin extends Funcionario {
             System.out.println("Erro: produto nulo");
             return;
         }
-        Produto.cadastrarProduto(produto);
+        //Produto.cadastrarProduto(produto);
         System.out.println("Produto: " + produto.getNome() + " cadastrado com sucesso.");
     }
 
