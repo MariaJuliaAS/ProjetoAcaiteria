@@ -1,5 +1,7 @@
 package br.edu.ufersa.model.entities;
 
+import br.edu.ufersa.model.services.AdicionalService;
+import br.edu.ufersa.model.services.ProdutoService;
 import com.sun.jdi.ClassNotLoadedException;
 
 import java.time.LocalDate;
@@ -12,15 +14,15 @@ import java.util.Map;
 public class SistemaAcaiteria {
     private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private List<Adicional>  adicionais;
-    private List<Produto>  produtos;
+    private AdicionalService adicionalService;
+    private ProdutoService produtoService;
     private List<Cliente> clientes;
     private List<Pedido> pedidos;
 
 
     public SistemaAcaiteria() {
-        this.adicionais = Adicional.adicionais;
-        this.produtos = Produto.produtos;
+        this.adicionalService = new AdicionalService();
+        this.produtoService = new ProdutoService();
         this.clientes = Cliente.getClientes();
         this.pedidos = Pedido.getPedidos();
     }
@@ -96,11 +98,10 @@ public class SistemaAcaiteria {
         List<Adicional> resultado = new ArrayList<>();
 
         if(nome == null || nome.isEmpty()){
-            System.out.println("Nome não pode ser vazio!");
-            return resultado;
+            throw  new IllegalArgumentException("Nome não pode ser vazio!");
         }
 
-        for (Adicional ad: adicionais){
+        for (Adicional ad: adicionalService.buscarPorNome(nome)){
             if(ad.getNome().toLowerCase().contains(nome.toLowerCase())){
                 resultado.add(ad);
             }

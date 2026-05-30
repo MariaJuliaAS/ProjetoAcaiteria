@@ -19,8 +19,8 @@ public class AdicionalService {
         if(a.getPreco() < 0){throw new IllegalArgumentException("Regra de Negócio Violada: O preço está inválido!");}
         if(a.getQtdEstoque() < 0){throw new IllegalArgumentException("Regra de Negócio Violada: A quantidade de estoque está inválido!");}
 
-        Adicional adicionalExistente = this.adicionalDAO.buscarPorNome(a);
-        if(adicionalExistente != null){throw new IllegalArgumentException("Já existe um adicional cadastrado com esse nome.");}
+        List<Adicional> adicionaisExistentes = this.adicionalDAO.buscarPorNome(a.getNome());
+        if(adicionaisExistentes.size() > 0){throw new IllegalArgumentException("Já existe um adicional cadastrado com esse nome.");}
 
         System.out.println("[SERVICE] Tudo certo! Encaminhando para o DAO gravar no banco...");
         this.adicionalDAO.cadastrar(a);
@@ -53,17 +53,16 @@ public class AdicionalService {
         this.adicionalDAO.excluir(a);
     }
 
-    public Adicional buscarPorNome(Adicional a){
+    public List<Adicional> buscarPorNome(String nome){
         System.out.println("[SERVICE] Validando...");
 
-        if(a == null){throw new IllegalArgumentException("Adicional inválido.");}
-        if(a.getNome() == null){throw new IllegalArgumentException("Regra de Negócio Violada: O nome do adicional não pode estar vazio!");}
+        if(nome == null){throw new IllegalArgumentException("Adicional inválido.");}
 
         initAdicionalDAO();
-        Adicional adicionalExistente = this.adicionalDAO.buscarPorNome(a);
-        if(adicionalExistente == null){throw new IllegalArgumentException("Adicional não encontrado.");}
+        List<Adicional> adicionais = this.adicionalDAO.buscarPorNome(nome);
+        if(adicionais == null){throw new IllegalArgumentException("Adicional não encontrado.");}
 
-        return adicionalExistente;
+        return adicionais;
     }
 
     public List<Adicional> buscarTodos(){

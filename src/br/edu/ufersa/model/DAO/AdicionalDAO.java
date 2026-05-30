@@ -66,29 +66,30 @@ public class AdicionalDAO {
         }
     }
 
-    public Adicional buscarPorNome(Adicional a){
-        String sql = "SELECT * FROM adicional WHERE nome = ?";
+    public List<Adicional> buscarPorNome(String nome){
+        String sql = "SELECT * FROM adicional WHERE nome LIKE ?";
+        List<Adicional> adicionais = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, a.getNome());
+            ps.setString(1, "%" + nome + "%");
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     Adicional ad = new Adicional();
                     ad.setId(rs.getInt("id"));
                     ad.setNome(rs.getString("nome"));
                     ad.setPreco(rs.getDouble("preco"));
                     ad.setQtdEstoque(rs.getInt("qtd_estoque"));
-                    return ad;
+                    adicionais.add(ad);
                 }
             }
+            return adicionais;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 
     public List<Adicional> buscarTodos(){
