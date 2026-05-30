@@ -1,6 +1,7 @@
 package br.edu.ufersa.model.DAO;
 
 import br.edu.ufersa.model.connectionFactory.ConnectionFactory;
+import br.edu.ufersa.model.entities.Adicional;
 import br.edu.ufersa.model.entities.Produto;
 
 import java.sql.Connection;
@@ -26,6 +27,8 @@ public class ProdutoDAO {
                 p.setId(rs.getInt(1));
             }
 
+            salvarAdicionaisDisponiveis(p);
+
             System.out.println("Produto cadastrado com sucesso! ID: " + p.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -43,6 +46,9 @@ public class ProdutoDAO {
             ps.setInt(3,p.getId());
             ps.executeUpdate();
 
+            removerAdicionaisDisponiveis(p);
+            salvarAdicionaisDisponiveis(p);
+
             System.out.println("Produto atualizado com sucesso!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -51,6 +57,7 @@ public class ProdutoDAO {
 
     public void excluir(Produto p){
         String sql = "DELETE FROM produto WHERE id=?";
+        removerAdicionaisDisponiveis(p);
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -77,6 +84,7 @@ public class ProdutoDAO {
                 p.setId(rs.getInt("id"));
                 p.setNome(rs.getString("nome"));
                 p.setPreco(rs.getDouble("preco"));
+                p.setAdicionaisDisponiveis(buscarAdicionaisDisponiveis(p));
                 produtos.add(p);
             }
 
@@ -101,6 +109,7 @@ public class ProdutoDAO {
                 produto.setId(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setPreco(rs.getDouble("preco"));
+                p.setAdicionaisDisponiveis(buscarAdicionaisDisponiveis(p));
                 return produto;
             }
 
@@ -109,5 +118,65 @@ public class ProdutoDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    private void salvarAdicionaisDisponiveis(Produto p){
+        if(p.getAdicionaisDisponiveis() == null || p.getAdicionaisDisponiveis().isEmpty()){
+            return;
+        }
+
+        String sql = "INSERT INTO produto_adicional(produto_id, adicional_id) VALUES (?, ?)";
+
+        try(Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            for(Adicional a: p.getAdicionaisDisponiveis()){
+                ps.setInt(1, p.getId());
+                ps.setInt(2, a.getId());
+                ps.executeUpdate();
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void removerAdicionaisDisponiveis(Produto p){
+        String sql = "DELETE FROM produto_adicional WHERE produto_id=?";
+
+        try(Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setInt(1, p.getId());
+            ps.executeUpdate();
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<Adicional> buscarAdicionaisDisponiveis(Produto p){
+        String sql = "SELECT a.* FROM adicional a INNER JOIN produto_adicional pa ON a.id = pa.adicional_id WHERE pa.produto_id=?";
+        List<Adicional> adicionaisDisponiveis = new ArrayList<>();
+
+        try(Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setInt(1, p.getId());
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                Adicional a = new Adicional();
+                a.setId(rs.getInt("id"));
+                a.setNome(rs.getString("nome"));
+                a.setPreco(rs.getDouble("preco"));
+                a.setQtdEstoque(rs.getInt("qtd_estoque"));
+                adicionaisDisponiveis.add(a);
+            }
+
+            return adicionaisDisponiveis;
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -67,4 +67,8 @@ public class ProdutoService {
         initProdutoDAO();
         return this.produtoDAO.buscarTodos();
     }
+
+    private void salvarAdicionais(Produto p){
+
+    }
 }
