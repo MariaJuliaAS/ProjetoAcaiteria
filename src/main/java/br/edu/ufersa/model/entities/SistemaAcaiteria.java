@@ -34,15 +34,15 @@ public class SistemaAcaiteria {
     }
 
     public List<Pedido> buscarPedido(Cliente cliente){
-        return null;
+        return pedidoService.buscarPorCliente(cliente);
     }
 
     public List<Pedido> buscarPedido(Produto produto){
-        return null;
+        return pedidoService.buscarPorProduto(produto);
     }
 
     public List<Pedido> buscarPedido(LocalDate data){
-        return null;
+        return pedidoService.buscarPorData(data);
     }
 
     public List<Adicional> buscarAdicionais(String nome){
@@ -150,6 +150,6 @@ public class SistemaAcaiteria {
     }
 
     public String gerarRelatorioPedido(LocalDate inicio, LocalDate fim){
-        return null;
+        return pedidoService.gerarRelatorio(inicio,fim);
     }
 }
