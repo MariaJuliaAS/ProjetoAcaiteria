@@ -1,10 +1,10 @@
 package br.edu.ufersa.model.entities;
 
+import br.edu.ufersa.model.DAO.PedidoDAO;
 import br.edu.ufersa.model.services.AdicionalService;
 import br.edu.ufersa.model.services.ClienteService;
 import br.edu.ufersa.model.services.PedidoService;
 import br.edu.ufersa.model.services.ProdutoService;
-import com.sun.jdi.ClassNotLoadedException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -69,7 +69,7 @@ public class SistemaAcaiteria {
             return "Período inválido!";
         }
 
-        List<Pedido> pedidos = new Pedido().getPedidos();
+        List<Pedido> pedidos = new PedidoDAO().buscarPorPeriodo(inicio, fim);
         if(pedidos == null || pedidos.isEmpty()){
             return "Nenhum pedido cadastrado!";
         }

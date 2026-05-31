@@ -240,6 +240,8 @@ public class PedidoDAO {
                 c.setId(rs.getInt("cliente_id"));
                 p.setCliente(c);
 
+                p.setItensPedido(buscarItens(p.getId()));
+
                 pedidos.add(p);
             }
 
@@ -345,6 +347,7 @@ public class PedidoDAO {
                 a.setId(rs.getInt("id"));
                 a.setNome(rs.getString("nome"));
                 a.setPreco(rs.getDouble("preco"));
+                a.setQtdEstoque(rs.getInt("qtd_estoque"));
 
                 lista.add(a);
             }
