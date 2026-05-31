@@ -1,6 +1,8 @@
 package br.edu.ufersa.model.entities;
 
 import br.edu.ufersa.model.services.AdicionalService;
+import br.edu.ufersa.model.services.ClienteService;
+import br.edu.ufersa.model.services.PedidoService;
 import br.edu.ufersa.model.services.ProdutoService;
 import com.sun.jdi.ClassNotLoadedException;
 
@@ -16,82 +18,31 @@ public class SistemaAcaiteria {
 
     private AdicionalService adicionalService;
     private ProdutoService produtoService;
-    private List<Cliente> clientes;
-    private List<Pedido> pedidos;
+    private ClienteService clienteService;
+    private PedidoService pedidoService;
 
 
     public SistemaAcaiteria() {
         this.adicionalService = new AdicionalService();
         this.produtoService = new ProdutoService();
-        this.clientes = Cliente.getClientes();
-        this.pedidos = Pedido.getPedidos();
+        this.clienteService = new ClienteService();
+        this.pedidoService = new PedidoService();
     }
 
-    public List<Cliente> buscarClientes(String nome){
-        List<Cliente> filtrados = new ArrayList<>();
-
-        if(nome == null || nome.isEmpty()){
-            System.out.println("Nome não pode ser vazio!");
-            return filtrados;
-        }
-
-        for (Cliente c : clientes){
-            if(c.getNome().toLowerCase().contains(nome.toLowerCase())){
-                filtrados.add(c);
-            }
-        }
-        return filtrados;
+    public List<Cliente> buscarClientesNome(String nome){
+        return clienteService.buscarPorNome(nome);
     }
 
     public List<Pedido> buscarPedido(Cliente cliente){
-        List<Pedido> filtrados = new ArrayList<>();
-
-        if(cliente == null){
-            System.out.println("Cliente não pode ser vazio!");
-            return filtrados;
-        }
-
-        for(Pedido p : pedidos){
-            if(p.getCliente().getId() == cliente.getId()){
-                filtrados.add(p);
-            }
-        }
-        return filtrados;
+        return null;
     }
 
     public List<Pedido> buscarPedido(Produto produto){
-        List<Pedido> filtrados = new ArrayList<>();
-
-        if(produto == null){
-            System.out.println("Produto não pode ser vazio!");
-            return filtrados;
-        }
-
-        for(Pedido p : pedidos){
-            for(ItemPedido ip : p.getItensPedido()){
-                if(ip.getProduto().getId() == produto.getId()){
-                    filtrados.add(p);
-                    break;
-                }
-            }
-        }
-        return filtrados;
+        return null;
     }
 
     public List<Pedido> buscarPedido(LocalDate data){
-        List<Pedido> filtrados = new ArrayList<>();
-
-        if(data == null){
-            System.out.println("Data não pode ser vazio!");
-            return filtrados;
-        }
-
-        for(Pedido p : pedidos){
-            if(p.getData().equals(data)){
-                filtrados.add(p);
-            }
-        }
-        return filtrados;
+        return null;
     }
 
     public List<Adicional> buscarAdicionais(String nome){
@@ -199,35 +150,6 @@ public class SistemaAcaiteria {
     }
 
     public String gerarRelatorioPedido(LocalDate inicio, LocalDate fim){
-        if(inicio == null || fim == null || inicio.isAfter(fim)){
-            return "Intervalo de datas inválido";
-        }
-
-        List<Pedido> filtrados = new ArrayList<>();
-        double totalFaturado = 0;
-
-        for(Pedido p : pedidos){
-            LocalDate data = p.getData();
-
-            if(data != null && !data.isBefore(inicio) && !data.isAfter(fim)){
-                filtrados.add(p);
-
-                for(ItemPedido ip : p.getItensPedido()){
-                    totalFaturado += ip.calcularValorItem();
-                }
-            }
-        }
-
-        String relatorio = "===== RELATÓRIO =====\n";
-        relatorio += "Período: " + inicio.format(FORMATO_DATA) + " até " + fim.format(FORMATO_DATA) + "\n";
-        relatorio += "Quantidade de pedidos: " + filtrados.size() + "\n";
-        relatorio += "Total faturado: R$ " + String.format("%.2f", totalFaturado) + "\n";
-        relatorio += "---------------------\n";
-
-        for(Pedido p : filtrados){
-            relatorio += Pedido.gerarNota(p) + "\n";
-        }
-
-        return relatorio;
+        return null;
     }
 }
