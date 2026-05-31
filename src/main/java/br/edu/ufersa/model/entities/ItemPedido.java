@@ -48,9 +48,7 @@ public class ItemPedido {
     }
 
     public void setAdicionaisEscolhidos(List<Adicional> adicionaisEscolhidos) {
-        if(adicionaisEscolhidos == null || adicionaisEscolhidos.isEmpty())
-            System.out.println("Nenhum adicional escolhido");
-        else this.adicionaisEscolhidos = adicionaisEscolhidos;
+        this.adicionaisEscolhidos = adicionaisEscolhidos;
     }
 
     @Override
