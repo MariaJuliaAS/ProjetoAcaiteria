@@ -28,4 +28,12 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+### Maven ###
+target/
+
+### IntelliJ ###
+.idea/
+*.iml
+
+### Configurações locais ###
 db.properties
