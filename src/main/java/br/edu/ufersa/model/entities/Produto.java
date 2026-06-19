@@ -1,6 +1,5 @@
 package br.edu.ufersa.model.entities;
 
-import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.List;
 
