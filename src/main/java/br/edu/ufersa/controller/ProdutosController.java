@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
-import br.edu.ufersa.model.entities.Adicional;
-import br.edu.ufersa.model.services.AdicionalService;
+import br.edu.ufersa.model.entities.Produto;
+import br.edu.ufersa.model.services.ProdutoService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,42 +15,41 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
-public class AdicionaisController {
+public class ProdutosController {
 
-    @FXML private FlowPane containerAdicionais;
+    @FXML private FlowPane containerProdutos;
     @FXML private TextField txtBusca;
     @FXML private Button btnBuscar;
-    @FXML private Button btnNovoAdicional;
+    @FXML private Button btnNovoProduto;
 
     @FXML private SidebarController sidebarController;
 
-    private final AdicionalService service = new AdicionalService();
+    private final ProdutoService service = new ProdutoService();
 
     @FXML
     public void initialize() {
         carregarTodos();
-        sidebarController.destacar(sidebarController.getBtnAdicionais());
+        sidebarController.destacar(sidebarController.getBtnProdutos());
     }
 
     private void carregarTodos() {
-        List<Adicional> adicionais = service.buscarTodos();
-        carregarCards(adicionais);
+        List<Produto> produtos = service.buscarTodos();
+        carregarCards(produtos);
     }
 
-    private void carregarCards(List<Adicional> adicionais) {
-        containerAdicionais.getChildren().clear();
+    private void carregarCards(List<Produto> produtos) {
+        containerProdutos.getChildren().clear();
 
-        for (Adicional adicional : adicionais) {
+        for (Produto produto : produtos) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/card-adicional.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/card-produto.fxml"));
                 Parent card = loader.load();
 
-                CardAdicionalController controller = loader.getController();
-                controller.setDados(adicional);
-
+                CardProdutoController controller = loader.getController();
+                controller.setDados(produto);
                 controller.setOnAlterado(this::carregarTodos);
 
-                containerAdicionais.getChildren().add(card);
+                containerProdutos.getChildren().add(card);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -59,7 +58,7 @@ public class AdicionaisController {
     }
 
     @FXML
-    private void buscarAdicional() {
+    private void buscarProduto() {
         String termo = txtBusca.getText();
 
         if (termo == null || termo.trim().isEmpty()) {
@@ -67,8 +66,12 @@ public class AdicionaisController {
             return;
         }
 
-        List<Adicional> resultado = service.buscarPorNome(termo.trim());
-        carregarCards(resultado);
+        List<Produto> todos = service.buscarTodos();
+        List<Produto> filtrados = todos.stream()
+                .filter(p -> p.getNome().toLowerCase().contains(termo.trim().toLowerCase()))
+                .toList();
+
+        carregarCards(filtrados);
     }
 
     @FXML
@@ -78,16 +81,16 @@ public class AdicionaisController {
     }
 
     @FXML
-    private void abrirNovoAdicional() {
+    private void abrirNovoProduto() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modal-novo-adicional.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modal-produto.fxml"));
             Parent root = loader.load();
 
-            ModalNovoAdicionalController controller = loader.getController();
+            ModalProdutoController controller = loader.getController();
             controller.setOnSalvar(this::carregarTodos);
 
             Stage modalStage = new Stage();
-            modalStage.setTitle("Novo Adicional");
+            modalStage.setTitle("Novo Produto");
             modalStage.initModality(Modality.APPLICATION_MODAL);
             modalStage.setScene(new Scene(root));
             modalStage.setResizable(false);

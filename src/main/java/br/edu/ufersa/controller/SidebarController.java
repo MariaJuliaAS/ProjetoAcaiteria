@@ -1,5 +1,6 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,21 +19,43 @@ public class SidebarController {
     @FXML private Button btnFuncionarios;
     @FXML private Button btnSair;
 
+    private static final String ESTILO_NORMAL =
+            "-fx-background-color: transparent; -fx-text-fill: #e0d0e8; -fx-font-size: 13px;";
+    private static final String ESTILO_ATIVO =
+            "-fx-background-color: #6b2d7a; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8px;";
+
     @FXML
     public void initialize() {
-        // Texto provisório, até existir uma entidade de usuário/sessão.
         lblNomeUsuario.setText("Ju Maromba");
         lblCargoUsuario.setText("Admin");
     }
 
-    // Os métodos abaixo ainda não fazem nada porque as telas
-    // correspondentes (Dashboard, Pedidos, etc.) ainda não existem.
-    // Conforme cada tela for criada, basta chamar aqui o método
-    // estático equivalente em MainApp (ex: MainApp.telaDashboard()).
+    public void destacar(Button botaoAtivo) {
+        for (Button botao : new Button[]{btnDashboard, btnPedidos, btnClientes,
+                btnProdutos, btnAdicionais, btnRelatorios, btnFuncionarios}) {
+            botao.setStyle(botao == botaoAtivo ? ESTILO_ATIVO : ESTILO_NORMAL);
+        }
+    }
+
+    public Button getBtnProdutos() {
+        return btnProdutos;
+    }
+
+    public Button getBtnAdicionais() {
+        return btnAdicionais;
+    }
 
     @FXML
-    private void sair() {
-        // Quando a tela de login existir, troque para:
-        // MainApp.telaDeLogin();
+    private void irParaProdutos() {
+        MainApp.telaProdutos();
     }
+
+    @FXML
+    private void irParaAdicionais() {
+        MainApp.telaAdicionais();
+    }
+
+    @FXML
+    private void sair(){}
+
 }

@@ -11,14 +11,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ScrollPane?>
 
-<BorderPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f5f3f5;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.controller.AdicionaisController">
+<BorderPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f5f3f5;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.controller.ProdutosController">
 
-   <!-- Sidebar reaproveitável, incluída de um arquivo separado -->
    <left>
       <fx:include source="sidebar.fxml" fx:id="sidebar" />
    </left>
 
-   <!-- Área de conteúdo -->
    <center>
       <VBox spacing="20.0">
          <padding>
@@ -26,12 +24,11 @@
          </padding>
          <children>
 
-            <!-- Cabeçalho: título + botão Novo Adicional -->
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Adicionais" />
+                  <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Produtos" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnNovoAdicional" mnemonicParsing="false" onAction="#abrirNovoAdicional" style="-fx-background-color: #8bc34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-cursor: hand;" text="+  Novo Adicional">
+                  <Button fx:id="btnNovoProduto" mnemonicParsing="false" onAction="#abrirNovoProduto" style="-fx-background-color: #8bc34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-cursor: hand;" text="+  Novo Produto">
                      <padding>
                         <Insets bottom="10.0" left="18.0" right="18.0" top="10.0" />
                      </padding>
@@ -39,15 +36,14 @@
                </children>
             </HBox>
 
-            <!-- Campo de busca + botão buscar -->
             <HBox spacing="10.0" alignment="CENTER_LEFT">
                <children>
-                  <TextField fx:id="txtBusca" maxWidth="400.0" promptText="Buscar adicional..." style="-fx-background-radius: 8px; -fx-border-color: #d8d0db; -fx-border-radius: 8px;">
+                  <TextField fx:id="txtBusca" maxWidth="400.0" promptText="Buscar produto..." style="-fx-background-radius: 8px; -fx-border-color: #d8d0db; -fx-border-radius: 8px;">
                      <padding>
                         <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
                      </padding>
                   </TextField>
-                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#buscarAdicional" style="-fx-background-color: #8bc34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-cursor: hand;" text="Buscar">
+                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#buscarProduto" style="-fx-background-color: #8bc34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-cursor: hand;" text="Buscar">
                      <padding>
                         <Insets bottom="10.0" left="18.0" right="18.0" top="10.0" />
                      </padding>
@@ -60,10 +56,9 @@
                </children>
             </HBox>
 
-            <!-- Container vazio onde os cards serão inseridos dinamicamente via código -->
             <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                <content>
-                  <FlowPane fx:id="containerAdicionais" hgap="20.0" vgap="20.0" style="-fx-background-color: transparent;" />
+                  <FlowPane fx:id="containerProdutos" hgap="20.0" vgap="20.0" style="-fx-background-color: transparent;" />
                </content>
             </ScrollPane>
 

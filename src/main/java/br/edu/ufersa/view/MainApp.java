@@ -16,7 +16,7 @@ public class MainApp extends Application {
     public void start(Stage primeiroStage) {
         stage = primeiroStage;
         stage.setTitle("Sistema de Açaí");
-
+        
         telaAdicionais();
 
         stage.show();
@@ -26,12 +26,20 @@ public class MainApp extends Application {
         trocarTela("/fxml/adicionais.fxml");
     }
 
+    public static void telaProdutos() {
+        trocarTela("/fxml/produtos.fxml");
+    }
+
+    public static void telaDeLogin() {
+        trocarTela("/fxml/login.fxml");
+    }
+
     private static void trocarTela(String caminhoFxml) {
         try {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource(caminhoFxml));
             Parent root = loader.load();
             stage.setScene(new Scene(root));
-            stage.centerOnScreen();
+            stage.setMaximized(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
