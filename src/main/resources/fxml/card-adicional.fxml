@@ -17,8 +17,8 @@
          <children>
             <Label fx:id="lblNome" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #1a1a1a;" text="Adicional" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" style="-fx-background-color: transparent; -fx-text-fill: #8e2a8e; -fx-font-size: 13px; -fx-cursor: hand;" text="🗑 Editar" />
-            <Button fx:id="btnExcluir" mnemonicParsing="false" onAction="#excluir" style="-fx-background-color: transparent; -fx-text-fill: #333333; -fx-font-size: 13px; -fx-cursor: hand;" text="✎ Excluir" />
+            <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" style="-fx-background-color: transparent; -fx-text-fill: #8e2a8e; -fx-font-size: 13px; -fx-cursor: hand;" text="✎ Editar" />
+            <Button fx:id="btnExcluir" mnemonicParsing="false" onAction="#excluir" style="-fx-background-color: transparent; -fx-text-fill: #333333; -fx-font-size: 13px; -fx-cursor: hand;" text="🗑 Excluir" />
          </children>
       </HBox>
 

@@ -8,18 +8,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public class CardAdicionalController {
 
-    @FXML private FlowPane containerAdicionais;
     @FXML private VBox cardRoot;
     @FXML private Label lblNome;
     @FXML private Label lblPreco;
@@ -43,33 +42,7 @@ public class CardAdicionalController {
         this.onAlterado = onAlterado;
     }
 
-    private void carregarTodos() {
-        List<Adicional> adicionais = service.buscarTodos();
-        carregarCards(adicionais);
-    }
-
-    private void carregarCards(List<Adicional> adicionais) {
-        containerAdicionais.getChildren().clear();
-
-        for (Adicional adicional : adicionais) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/card-adicional.fxml"));
-                Parent card = loader.load();
-
-                CardAdicionalController controller = loader.getController();
-                controller.setDados(adicional);
-
-                controller.setOnAlterado(this::carregarTodos);
-
-                containerAdicionais.getChildren().add(card);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-        @FXML
+    @FXML
     private void excluir() {
         Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacao.setTitle("Confirmar exclusão");
@@ -77,20 +50,31 @@ public class CardAdicionalController {
         confirmacao.setContentText("Deseja excluir o adicional \"" + adicional.getNome() + "\"?");
 
         confirmacao.showAndWait().ifPresent(resposta -> {
-            if (resposta.getText().equalsIgnoreCase("OK")) {
+            if (resposta == ButtonType.OK) {
                 try {
                     service.excluirAdicional(adicional);
                     if (onAlterado != null) {
                         onAlterado.run();
                     }
                 } catch (IllegalArgumentException e) {
-                    Alert erro = new Alert(Alert.AlertType.ERROR);
-                    erro.setTitle("Erro ao excluir");
-                    erro.setContentText(e.getMessage());
-                    erro.showAndWait();
+                    mostrarErro(e.getMessage());
+                } catch (RuntimeException e) {
+                    if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                        mostrarErro("Este adicional não pode ser excluído porque já foi usado em pedidos.");
+                    } else {
+                        mostrarErro("Não foi possível excluir o adicional. Tente novamente.");
+                    }
                 }
             }
         });
+    }
+
+    private void mostrarErro(String mensagem) {
+        Alert erro = new Alert(Alert.AlertType.ERROR);
+        erro.setTitle("Erro ao excluir");
+        erro.setHeaderText(null);
+        erro.setContentText(mensagem);
+        erro.showAndWait();
     }
 
     @FXML
@@ -99,8 +83,9 @@ public class CardAdicionalController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modal-editar-adicional.fxml"));
             Parent root = loader.load();
 
-            ModalNovoAdicionalController controller = loader.getController();
-            controller.setOnSalvar(this::carregarTodos);
+            ModalEditarAdicionalController controller = loader.getController();
+            controller.setAdicional(adicional);
+            controller.setOnSalvar(onAlterado);
 
             Stage modalStage = new Stage();
             modalStage.setTitle("Editar Adicional");
