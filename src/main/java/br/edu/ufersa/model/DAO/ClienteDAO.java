@@ -36,9 +36,9 @@ public class ClienteDAO {
 
     public void editar(Cliente cliente) {
         String sql = "UPDATE cliente SET nome = ?, telefone = ?, endereco = ? WHERE id = ?";
+        Connection con = ConnectionFactory.getConnection();
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, cliente.getNome());
             ps.setString(2, cliente.getTelefone());
@@ -53,9 +53,9 @@ public class ClienteDAO {
 
     public void excluir(Cliente cliente) {
         String sql = "DELETE FROM cliente WHERE id = ?";
+        Connection con = ConnectionFactory.getConnection();
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, cliente.getId());
             ps.execute();
@@ -69,9 +69,9 @@ public class ClienteDAO {
 
         String sql = "SELECT * FROM cliente WHERE nome LIKE ?";
         List<Cliente> clientes = new ArrayList<>();
+        Connection con = ConnectionFactory.getConnection();
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nome + "%");
 

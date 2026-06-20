@@ -14,9 +14,9 @@ import java.util.List;
 public class ProdutoDAO {
     public void cadastrar(Produto p){
         String sql = "INSERT INTO produto (nome, preco) VALUES (?, ?)";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1,p.getNome());
             ps.setDouble(2,p.getPreco());
@@ -37,9 +37,9 @@ public class ProdutoDAO {
 
     public void editar(Produto p){
         String sql =  "UPDATE produto SET nome=?, preco=? WHERE id=?";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1,p.getNome());
             ps.setDouble(2,p.getPreco());
@@ -59,8 +59,9 @@ public class ProdutoDAO {
         String sql = "DELETE FROM produto WHERE id=?";
         removerAdicionaisDisponiveis(p);
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = ConnectionFactory.getConnection();
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1,p.getId());
             ps.executeUpdate();
@@ -74,9 +75,9 @@ public class ProdutoDAO {
     public List<Produto> buscarTodos(){
         String sql = "SELECT * FROM produto";
         List<Produto> produtos = new ArrayList<>();
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
+        try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while(rs.next()){
@@ -97,9 +98,9 @@ public class ProdutoDAO {
 
     public Produto buscarPorId(Produto p){
         String sql = "SELECT * FROM produto WHERE id=?";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1,p.getId());
             ResultSet rs = ps.executeQuery();
@@ -126,9 +127,9 @@ public class ProdutoDAO {
         }
 
         String sql = "INSERT INTO produto_adicional(produto_id, adicional_id) VALUES (?, ?)";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try(Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
 
             for(Adicional a: p.getAdicionaisDisponiveis()){
                 ps.setInt(1, p.getId());
@@ -143,9 +144,9 @@ public class ProdutoDAO {
 
     private void removerAdicionaisDisponiveis(Produto p){
         String sql = "DELETE FROM produto_adicional WHERE produto_id=?";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try(Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setInt(1, p.getId());
             ps.executeUpdate();
@@ -158,9 +159,9 @@ public class ProdutoDAO {
     private List<Adicional> buscarAdicionaisDisponiveis(Produto p){
         String sql = "SELECT a.* FROM adicional a INNER JOIN produto_adicional pa ON a.id = pa.adicional_id WHERE pa.produto_id=?";
         List<Adicional> adicionaisDisponiveis = new ArrayList<>();
+        Connection conn = ConnectionFactory.getConnection();
 
-        try(Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
 
             ps.setInt(1, p.getId());
             ResultSet rs = ps.executeQuery();

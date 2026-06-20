@@ -16,7 +16,7 @@ public class MainApp extends Application {
     public void start(Stage primeiroStage) {
         stage = primeiroStage;
         stage.setTitle("Sistema de Açaí");
-        
+
         telaAdicionais();
 
         stage.show();

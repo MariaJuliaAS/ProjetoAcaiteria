@@ -37,9 +37,9 @@ public class PedidoDAO {
 
     public void editar(Pedido p) {
         String sql = "UPDATE pedido SET data = ?, forma_pagamento = ?, cliente_id = ? WHERE id = ?";
+        Connection con = ConnectionFactory.getConnection();
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setDate(1, Date.valueOf(p.getData()));
             ps.setString(2, p.getFormaPagamento());
@@ -54,9 +54,9 @@ public class PedidoDAO {
 
     public void excluir(Pedido p) {
         String sql = "DELETE FROM pedido WHERE id = ?";
+        Connection con = ConnectionFactory.getConnection();
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, p.getId());
             ps.execute();
@@ -116,9 +116,9 @@ public class PedidoDAO {
         List<Pedido> pedidos = new ArrayList<>();
 
         String sql = "SELECT * FROM pedido WHERE data = ?";
+        Connection con = ConnectionFactory.getConnection();
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setDate(1, Date.valueOf(data));
 
@@ -145,9 +145,9 @@ public class PedidoDAO {
         List<Pedido> pedidos = new ArrayList<>();
 
         String sql = "SELECT * FROM pedido WHERE cliente_id = ?";
+        Connection con = ConnectionFactory.getConnection();
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, c.getId());
 
@@ -180,8 +180,7 @@ public class PedidoDAO {
                         "JOIN item_pedido ip ON p.id = ip.pedido_id " +
                         "WHERE ip.produto_id = ?";
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, produto.getId());
 
@@ -221,8 +220,7 @@ public class PedidoDAO {
 
         String sql = "SELECT * FROM pedido WHERE data BETWEEN ? AND ? ORDER BY data";
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setDate(1, Date.valueOf(inicio));
             ps.setDate(2, Date.valueOf(fim));
@@ -256,8 +254,7 @@ public class PedidoDAO {
 
         String sql = "SELECT * FROM pedido WHERE id = ?";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, id);
 
@@ -295,8 +292,7 @@ public class PedidoDAO {
                 "JOIN produto pr ON ip.produto_id = pr.id " +
                 "WHERE ip.pedido_id = ?";
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, pedidoId);
 
@@ -334,8 +330,7 @@ public class PedidoDAO {
                         "JOIN item_pedido_adicional ipa ON a.id = ipa.adicional_id " +
                         "WHERE ipa.item_pedido_id = ?";
 
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, itemId);
 

@@ -14,9 +14,9 @@ public class AdicionalDAO {
 
     public void cadastrar(Adicional a){
         String sql = "INSERT INTO adicional (nome, preco, qtd_estoque) VALUES (?, ?, ?)";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, a.getNome());
             ps.setDouble(2, a.getPreco());
@@ -37,9 +37,9 @@ public class AdicionalDAO {
 
     public void editar(Adicional a){
         String sql = "UPDATE adicional SET nome = ?, preco = ?, qtd_estoque = ? WHERE id = ?";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, a.getNome());
             ps.setDouble(2, a.getPreco());
@@ -54,9 +54,9 @@ public class AdicionalDAO {
 
     public void excluir(Adicional a){
         String sql = "DELETE FROM adicional WHERE id = ?";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, a.getId());
             ps.executeUpdate();
@@ -69,9 +69,9 @@ public class AdicionalDAO {
     public List<Adicional> buscarPorNome(String nome){
         String sql = "SELECT * FROM adicional WHERE nome LIKE ?";
         List<Adicional> adicionais = new ArrayList<>();
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + nome + "%");
 
@@ -94,9 +94,9 @@ public class AdicionalDAO {
 
     public List<Adicional> buscarTodos(){
         String sql = "SELECT * FROM adicional";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
+        try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             List<Adicional> adicionais = new ArrayList<>();
@@ -117,9 +117,9 @@ public class AdicionalDAO {
 
     public Adicional buscarPorId(Adicional a){
         String sql = "SELECT * FROM adicional WHERE id = ?";
+        Connection conn = ConnectionFactory.getConnection();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, a.getId());
 
@@ -140,5 +140,3 @@ public class AdicionalDAO {
         return null;
     }
 }
-
-
