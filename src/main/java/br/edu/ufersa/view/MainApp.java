@@ -30,6 +30,14 @@ public class MainApp extends Application {
         trocarTela("/fxml/produtos.fxml");
     }
 
+    public static void telaPedidos() {
+        trocarTela("/fxml/pedidos.fxml");
+    }
+
+    public static void telaClientes() {
+        trocarTela("/fxml/clientes.fxml");
+    }
+
     public static void telaDeLogin() {
         trocarTela("/fxml/login.fxml");
     }
