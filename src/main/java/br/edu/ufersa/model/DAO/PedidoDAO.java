@@ -11,25 +11,24 @@ import java.util.List;
 public class PedidoDAO {
 
     public void cadastrar(Pedido p) {
-        Connection con = ConnectionFactory.getConnection();
-        String sql = "INSERT INTO pedido (data,forma_pagamento,cliente_id)" +
-                "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO pedido (data, forma_pagamento, cliente_id) VALUES (?, ?, ?)";
 
-        try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setDate(1, Date.valueOf(p.getData()));
             ps.setString(2, p.getFormaPagamento());
             ps.setInt(3, p.getCliente().getId());
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            if(rs.next()){
-                p.setId(rs.getInt(1));
 
-                salvarItens(con,p);
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                p.setId(rs.getInt(1));
+                salvarItens(con, p);
             }
 
             System.out.println("Pedido cadastrado com sucesso! ID: " + p.getId());
-            ps.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -115,10 +114,12 @@ public class PedidoDAO {
 
         List<Pedido> pedidos = new ArrayList<>();
 
-        String sql = "SELECT * FROM pedido WHERE data = ?";
-        Connection con = ConnectionFactory.getConnection();
+        String sql = "SELECT p.*, c.nome, c.telefone, c.endereco " +
+                "FROM pedido p " +
+                "JOIN cliente c ON p.cliente_id = c.id " +
+                "WHERE p.data = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setDate(1, Date.valueOf(data));
 
@@ -129,6 +130,16 @@ public class PedidoDAO {
                 Pedido p = new Pedido();
                 p.setId(rs.getInt("id"));
                 p.setData(rs.getDate("data").toLocalDate());
+                p.setFormaPagamento(rs.getString("forma_pagamento"));
+
+                Cliente c = new Cliente();
+                c.setId(rs.getInt("cliente_id"));
+                c.setNome(rs.getString("nome"));
+                c.setTelefone(rs.getString("telefone"));
+                c.setEndereco(rs.getString("endereco"));
+
+                p.setCliente(c);
+                p.setItensPedido(buscarItens(p.getId()));
 
                 pedidos.add(p);
             }
@@ -144,10 +155,12 @@ public class PedidoDAO {
 
         List<Pedido> pedidos = new ArrayList<>();
 
-        String sql = "SELECT * FROM pedido WHERE cliente_id = ?";
-        Connection con = ConnectionFactory.getConnection();
+        String sql = "SELECT p.*, c.nome, c.telefone, c.endereco " +
+                "FROM pedido p " +
+                "JOIN cliente c ON p.cliente_id = c.id " +
+                "WHERE p.cliente_id = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, c.getId());
 
@@ -158,6 +171,16 @@ public class PedidoDAO {
                 Pedido p = new Pedido();
                 p.setId(rs.getInt("id"));
                 p.setData(rs.getDate("data").toLocalDate());
+                p.setFormaPagamento(rs.getString("forma_pagamento"));
+
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("cliente_id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setEndereco(rs.getString("endereco"));
+
+                p.setCliente(cliente);
+                p.setItensPedido(buscarItens(p.getId()));
 
                 pedidos.add(p);
             }
@@ -189,7 +212,6 @@ public class PedidoDAO {
             while (rs.next()) {
 
                 Pedido p = new Pedido();
-
                 p.setId(rs.getInt("id"));
                 p.setData(rs.getDate("data").toLocalDate());
                 p.setFormaPagamento(rs.getString("forma_pagamento"));
@@ -218,7 +240,12 @@ public class PedidoDAO {
 
         List<Pedido> pedidos = new ArrayList<>();
 
-        String sql = "SELECT * FROM pedido WHERE data BETWEEN ? AND ? ORDER BY data";
+        String sql =
+                "SELECT p.*, c.nome, c.telefone, c.endereco " +
+                        "FROM pedido p " +
+                        "JOIN cliente c ON p.cliente_id = c.id " +
+                        "WHERE p.data BETWEEN ? AND ? " +
+                        "ORDER BY p.data";
 
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
@@ -236,6 +263,10 @@ public class PedidoDAO {
 
                 Cliente c = new Cliente();
                 c.setId(rs.getInt("cliente_id"));
+                c.setNome(rs.getString("nome"));
+                c.setTelefone(rs.getString("telefone"));
+                c.setEndereco(rs.getString("endereco"));
+
                 p.setCliente(c);
 
                 p.setItensPedido(buscarItens(p.getId()));
@@ -251,27 +282,31 @@ public class PedidoDAO {
     }
 
     public Pedido buscarPorId(int id) {
+        String sql = "SELECT p.*, c.nome, c.telefone, c.endereco " +
+                "FROM pedido p " +
+                "JOIN cliente c ON p.cliente_id = c.id " +
+                "WHERE p.id = ?";
 
-        String sql = "SELECT * FROM pedido WHERE id = ?";
-
-        try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-
                 Pedido p = new Pedido();
-
                 p.setId(rs.getInt("id"));
                 p.setData(rs.getDate("data").toLocalDate());
                 p.setFormaPagamento(rs.getString("forma_pagamento"));
 
                 Cliente c = new Cliente();
                 c.setId(rs.getInt("cliente_id"));
+                c.setNome(rs.getString("nome"));
+                c.setTelefone(rs.getString("telefone"));
+                c.setEndereco(rs.getString("endereco"));
 
                 p.setCliente(c);
+                p.setItensPedido(buscarItens(p.getId()));
 
                 return p;
             }
@@ -283,8 +318,43 @@ public class PedidoDAO {
         return null;
     }
 
-    private List<ItemPedido> buscarItens(int pedidoId) throws SQLException {
+    public List<Pedido> buscarTodos() {
+        String sql = "SELECT p.*, c.nome, c.telefone, c.endereco " +
+                "FROM pedido p " +
+                "JOIN cliente c ON p.cliente_id = c.id";
+        List<Pedido> pedidos = new ArrayList<>();
 
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Pedido p = new Pedido();
+                p.setId(rs.getInt("id"));
+                p.setData(rs.getDate("data").toLocalDate());
+                p.setFormaPagamento(rs.getString("forma_pagamento"));
+
+                Cliente c = new Cliente();
+                c.setId(rs.getInt("cliente_id"));
+                c.setNome(rs.getString("nome"));
+                c.setTelefone(rs.getString("telefone"));
+                c.setEndereco(rs.getString("endereco"));
+
+                p.setCliente(c);
+                p.setItensPedido(buscarItens(p.getId()));
+
+                pedidos.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return pedidos;
+    }
+
+    private List<ItemPedido> buscarItens(int pedidoId) {
         List<ItemPedido> itens = new ArrayList<>();
 
         String sql = "SELECT ip.*, pr.nome, pr.preco " +
@@ -295,11 +365,9 @@ public class PedidoDAO {
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, pedidoId);
-
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
                 ItemPedido item = new ItemPedido();
                 item.setId(rs.getInt("id"));
                 item.setQuantidade(rs.getInt("quantidade"));
@@ -310,34 +378,32 @@ public class PedidoDAO {
                 pr.setPreco(rs.getDouble("preco"));
 
                 item.setProduto(pr);
-
                 item.setAdicionaisEscolhidos(buscarAdicionais(item.getId()));
 
                 itens.add(item);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return itens;
     }
 
-    private List<Adicional> buscarAdicionais(int itemId) throws SQLException {
-
+    private List<Adicional> buscarAdicionais(int itemId) {
         List<Adicional> lista = new ArrayList<>();
 
-        String sql =
-                "SELECT a.* " +
-                        "FROM adicional a " +
-                        "JOIN item_pedido_adicional ipa ON a.id = ipa.adicional_id " +
-                        "WHERE ipa.item_pedido_id = ?";
+        String sql = "SELECT a.* " +
+                "FROM adicional a " +
+                "JOIN item_pedido_adicional ipa ON a.id = ipa.adicional_id " +
+                "WHERE ipa.item_pedido_id = ?";
 
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, itemId);
-
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
                 Adicional a = new Adicional();
                 a.setId(rs.getInt("id"));
                 a.setNome(rs.getString("nome"));
@@ -346,6 +412,9 @@ public class PedidoDAO {
 
                 lista.add(a);
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return lista;

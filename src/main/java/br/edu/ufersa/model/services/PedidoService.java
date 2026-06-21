@@ -146,6 +146,10 @@ public class PedidoService {
         return pedidoDAO.buscarPorId(id);
     }
 
+    public List<Pedido> buscarTodos() {
+        return pedidoDAO.buscarTodos();
+    }
+
     public String gerarNota(Pedido p) {
 
         String nota = "";
