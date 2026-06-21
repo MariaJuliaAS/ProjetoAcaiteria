@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane style="-fx-background-color: #f5f3f5;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.controller.ModalNovoPedidoController">
+
+    <center>
+        <HBox spacing="20.0">
+            <padding>
+                <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
+            </padding>
+            <children>
+
+                <VBox spacing="16.0" HBox.hgrow="ALWAYS">
+                    <children>
+
+                        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Novo Pedido" />
+
+                        <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-color: #e0e0e0; -fx-border-radius: 10px;">
+                            <padding>
+                                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                            </padding>
+                            <children>
+                                <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Selecione os produtos" />
+                                <ScrollPane fitToWidth="true" prefHeight="220.0" style="-fx-background-color: transparent; -fx-background: transparent;">
+                                    <content>
+                                        <FlowPane fx:id="containerProdutos" hgap="12.0" style="-fx-background-color: transparent;" vgap="12.0" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-color: #e0e0e0; -fx-border-radius: 10px;">
+                            <padding>
+                                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                            </padding>
+                            <children>
+                                <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Selecione os adicionais" />
+                                <GridPane fx:id="gridAdicionais" hgap="24.0" vgap="12.0" />
+                            </children>
+                        </VBox>
+
+                    </children>
+                </VBox>
+
+                <VBox prefWidth="360.0" spacing="14.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-color: #e0e0e0; -fx-border-radius: 10px;">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+
+                        <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Resumo" />
+
+                        <HBox spacing="10.0">
+                            <children>
+                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-font-size: 12px; -fx-text-fill: #888888;" text="Cliente" />
+                                        <ComboBox fx:id="cmbCliente" maxWidth="1.7976931348623157E308" promptText="Selecione" style="-fx-border-radius: 8px; -fx-background-color: #FAFAFA; -fx-border-color: #d8d0db;" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label style="-fx-font-size: 12px; -fx-text-fill: #888888;" text="Pagamento" />
+                                        <ComboBox fx:id="cmbPagamento" maxWidth="1.7976931348623157E308" promptText="Selecione" style="-fx-border-radius: 8px; -fx-background-color: #FAFAFA; -fx-border-color: #d8d0db;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <Separator />
+
+                        <Label fx:id="lblNenhumItem" alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-text-fill: #aaaaaa; -fx-font-size: 13px;" text="Nenhum item adicionado" />
+
+                        <ListView fx:id="listaItens" prefHeight="180.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" VBox.vgrow="ALWAYS" />
+
+                        <Separator />
+
+                        <HBox alignment="CENTER_LEFT">
+                            <children>
+                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Total" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="lblTotal" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #6b2d7a;" text="R$ 0,00" />
+                            </children>
+                        </HBox>
+
+                        <Button fx:id="btnFinalizar" maxWidth="1.7976931348623157E308" onAction="#finalizarPedido" style="-fx-background-color: #8bc34a; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-cursor: hand; -fx-padding: 12px;" text="+ Finalizar Pedido" />
+
+                    </children>
+                </VBox>
+
+            </children>
+        </HBox>
+    </center>
+
+</BorderPane>
