@@ -17,7 +17,6 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <Circle fill="#8bc34a" radius="16.0" />
             <VBox spacing="2.0">
                <children>
                   <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" text="Ju Maromba" />
@@ -32,7 +31,7 @@
             <Insets left="14.0" right="14.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="btnDashboard" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #e0d0e8; -fx-font-size: 13px;" text="📊  Dashboard">
+            <Button fx:id="btnDashboard" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irParaDashboard" style="-fx-background-color: transparent; -fx-text-fill: #e0d0e8; -fx-font-size: 13px;" text="📊  Dashboard">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -72,7 +71,6 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="8.0">
                <children>
-                  <Circle fill="#8e6a9c" radius="14.0" />
                   <VBox spacing="1.0">
                      <children>
                         <Label fx:id="lblNomeUsuario" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px;" text="Nome" />

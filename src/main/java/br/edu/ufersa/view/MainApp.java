@@ -17,9 +17,13 @@ public class MainApp extends Application {
         stage = primeiroStage;
         stage.setTitle("Sistema de Açaí");
 
-        telaAdicionais();
+        telaDashboard();
 
         stage.show();
+    }
+
+    public static void telaDashboard() {
+        trocarTela("/fxml/dashboard.fxml");
     }
 
     public static void telaAdicionais() {

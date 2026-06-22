@@ -57,6 +57,10 @@ public class SidebarController {
         return btnRelatorios;
     }
 
+    public Button getBtnDashboard() {
+        return btnDashboard;
+    }
+
     @FXML
     private void irParaProdutos() {
         MainApp.telaProdutos();
@@ -80,6 +84,11 @@ public class SidebarController {
     @FXML
     private void irParaRelatorios() {
         MainApp.telaRelatorios();
+    }
+
+    @FXML
+    private void irParaDashboard() {
+        MainApp.telaDashboard();
     }
 
     @FXML

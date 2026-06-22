@@ -153,6 +153,38 @@ public class SistemaAcaiteria {
         return pedidoService.gerarRelatorio(inicio,fim);
     }
 
+    public double calcularFaturamento(List<Pedido> pedidos){
+        if (pedidos == null || pedidos.isEmpty()) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+
+        for (Pedido p : pedidos) {
+            if (p == null || p.getItensPedido() == null) {
+                continue;
+            }
+
+            for (ItemPedido item : p.getItensPedido()) {
+                if (item == null || item.getProduto() == null || item.getQuantidade() <= 0) {
+                    continue;
+                }
+
+                total += item.getProduto().getPreco() * item.getQuantidade();
+
+                if (item.getAdicionaisEscolhidos() != null) {
+                    for (Adicional ad : item.getAdicionaisEscolhidos()) {
+                        if (ad != null) {
+                            total += ad.getPreco() * item.getQuantidade();
+                        }
+                    }
+                }
+            }
+        }
+
+        return total;
+    }
+
     public List<RelatorioAdicionalItem> gerarRelatorioAdicionalLista(LocalDate inicio, LocalDate fim){
         List<RelatorioAdicionalItem> resultado = new ArrayList<>();
 
