@@ -2,6 +2,7 @@ package br.edu.ufersa.controller;
 
 import br.edu.ufersa.model.entities.Produto;
 import br.edu.ufersa.model.services.ProdutoService;
+import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,6 +29,10 @@ public class ProdutosController {
 
     @FXML
     public void initialize() {
+        if (MainApp.getTipoUsuario().equals("funcionario")) {
+            btnNovoProduto.setVisible(false);
+            btnNovoProduto.setManaged(false);
+        }
         carregarTodos();
         sidebarController.destacar(sidebarController.getBtnProdutos());
     }

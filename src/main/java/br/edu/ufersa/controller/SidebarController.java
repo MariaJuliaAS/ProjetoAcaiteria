@@ -26,8 +26,13 @@ public class SidebarController {
 
     @FXML
     public void initialize() {
-        lblNomeUsuario.setText("Ju Maromba");
-        lblCargoUsuario.setText("Admin");
+        lblNomeUsuario.setText(MainApp.getTipoUsuario().equals("admin") ? "Ju Maromba" : "Maicko");
+        lblCargoUsuario.setText(MainApp.getTipoUsuario().equals("admin") ? "Admin" : "Funcionário");
+
+        if (MainApp.getTipoUsuario().equals("funcionario")) {
+            btnFuncionarios.setVisible(false);
+            btnFuncionarios.setManaged(false);
+        }
     }
 
     public void destacar(Button botaoAtivo) {
@@ -92,6 +97,8 @@ public class SidebarController {
     }
 
     @FXML
-    private void sair(){}
+    private void sair(){
+        MainApp.telaLogin();
+    }
 
 }
