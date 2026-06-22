@@ -53,6 +53,10 @@ public class SidebarController {
         return btnPedidos;
     }
 
+    public Button getBtnRelatorios() {
+        return btnRelatorios;
+    }
+
     @FXML
     private void irParaProdutos() {
         MainApp.telaProdutos();
@@ -71,6 +75,11 @@ public class SidebarController {
     @FXML
     private void irParaPedidos() {
         MainApp.telaPedidos();
+    }
+
+    @FXML
+    private void irParaRelatorios() {
+        MainApp.telaRelatorios();
     }
 
     @FXML

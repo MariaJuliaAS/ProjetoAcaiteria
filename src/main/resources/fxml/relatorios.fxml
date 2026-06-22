@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f5f3f5;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.controller.RelatoriosController">
+
+   <left>
+      <fx:include fx:id="sidebar" source="sidebar.fxml" />
+   </left>
+
+   <center>
+      <VBox spacing="20.0">
+         <padding>
+            <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
+         </padding>
+         <children>
+
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Relatórios" />
+
+            <HBox spacing="40.0">
+               <children>
+
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #666666;" text="Período" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <Button fx:id="btnDia" mnemonicParsing="false" onAction="#selecionarDia" style="-fx-background-color: #6b2d7a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-cursor: hand;" text="Dia">
+                                 <padding>
+                                    <Insets bottom="10.0" left="24.0" right="24.0" top="10.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="btnSemana" mnemonicParsing="false" onAction="#selecionarSemana" style="-fx-background-color: white; -fx-text-fill: #444444; -fx-border-color: #d8d0db; -fx-background-radius: 8px; -fx-border-radius: 8px; -fx-cursor: hand;" text="Semana">
+                                 <padding>
+                                    <Insets bottom="10.0" left="24.0" right="24.0" top="10.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="btnMes" mnemonicParsing="false" onAction="#selecionarMes" style="-fx-background-color: white; -fx-text-fill: #444444; -fx-border-color: #d8d0db; -fx-background-radius: 8px; -fx-border-radius: 8px; -fx-cursor: hand;" text="Mês">
+                                 <padding>
+                                    <Insets bottom="10.0" left="24.0" right="24.0" top="10.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label style="-fx-font-size: 13px; -fx-text-fill: #666666;" text="Data de Referência" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <TextField fx:id="txtDataReferencia" onAction="#alterarDataReferencia" promptText="dd/MM/yyyy" style="-fx-background-radius: 8px; -fx-border-color: #d8d0db; -fx-border-radius: 8px;">
+                                 <padding>
+                                    <Insets bottom="10.0" left="14.0" right="14.0" top="10.0" />
+                                 </padding>
+                              </TextField>
+                              <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#alterarDataReferencia" style="-fx-background-color: #8bc34a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-cursor: hand;" text="Buscar">
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <Region HBox.hgrow="ALWAYS" />
+
+               </children>
+            </HBox>
+
+            <HBox spacing="24.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 12px; -fx-border-color: #e0e0e0; -fx-border-radius: 12px;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-text-fill: #aaaaaa; -fx-font-size: 13px;" text="Card de Pedidos do Dia" />
+                     </children>
+                  </VBox>
+
+                  <VBox spacing="14.0" style="-fx-background-color: white; -fx-background-radius: 12px; -fx-border-color: #e0e0e0; -fx-border-radius: 12px;" HBox.hgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="18.0" left="20.0" right="20.0" top="18.0" />
+                     </padding>
+                     <children>
+
+                        <Label style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="📋  Adicionais do Dia" />
+
+                        <TableView fx:id="tabelaAdicionais" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                           <columns>
+                              <TableColumn fx:id="colNome" prefWidth="160.0" text="Adicional" />
+                              <TableColumn fx:id="colQtd" prefWidth="60.0" text="Qtd." />
+                              <TableColumn fx:id="colValor" prefWidth="110.0" text="Valor" />
+                              <TableColumn fx:id="colEstoque" prefWidth="90.0" text="Estoque" />
+                           </columns>
+                        </TableView>
+
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Label style="-fx-text-fill: #888888; -fx-font-size: 13px;" text="Total: " />
+                              <Label fx:id="lblTotal" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #1a1a1a;" text="R\$ 0,00" />
+                           </children>
+                        </HBox>
+
+                     </children>
+                  </VBox>
+
+               </children>
+            </HBox>
+
+         </children>
+      </VBox>
+   </center>
+
+</BorderPane>

@@ -38,8 +38,8 @@ public class MainApp extends Application {
         trocarTela("/fxml/clientes.fxml");
     }
 
-    public static void telaDeLogin() {
-        trocarTela("/fxml/login.fxml");
+    public static void telaRelatorios() {
+        trocarTela("/fxml/relatorios.fxml");
     }
 
     private static void trocarTela(String caminhoFxml) {

@@ -52,7 +52,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="btnRelatorios" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #e0d0e8; -fx-font-size: 13px;" text="📈  Relatórios">
+            <Button fx:id="btnRelatorios" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irParaRelatorios" style="-fx-background-color: transparent; -fx-text-fill: #e0d0e8; -fx-font-size: 13px;" text="📈  Relatórios">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
