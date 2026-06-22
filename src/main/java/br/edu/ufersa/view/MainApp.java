@@ -11,15 +11,26 @@ import java.io.IOException;
 public class MainApp extends Application {
 
     private static Stage stage;
+    private static String tipoUsuario = "admin";
+    private static Scene scene;
 
     @Override
     public void start(Stage primeiroStage) {
         stage = primeiroStage;
         stage.setTitle("Sistema de Açaí");
 
-        telaDashboard();
+        try {
+            Parent root = FXMLLoader.load(MainApp.class.getResource("/fxml/login.fxml"));
 
-        stage.show();
+            scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void telaDashboard() {
@@ -46,12 +57,16 @@ public class MainApp extends Application {
         trocarTela("/fxml/relatorios.fxml");
     }
 
+    public static void telaLogin() {
+        trocarTela("/fxml/login.fxml");
+    }
+
     private static void trocarTela(String caminhoFxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource(caminhoFxml));
-            Parent root = loader.load();
-            stage.setScene(new Scene(root));
-            stage.setMaximized(true);
+            Parent root = FXMLLoader.load(MainApp.class.getResource(caminhoFxml));
+
+            scene.setRoot(root);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,6 +74,14 @@ public class MainApp extends Application {
 
     public static Stage getStage() {
         return stage;
+    }
+
+    public static String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public static void setTipoUsuario(String tipo) {
+        tipoUsuario = tipo;
     }
 
     public static void main(String[] args) {

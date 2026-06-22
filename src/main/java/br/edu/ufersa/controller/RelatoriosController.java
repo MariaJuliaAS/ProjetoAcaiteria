@@ -1,7 +1,10 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.model.entities.Pedido;
 import br.edu.ufersa.model.entities.RelatorioAdicionalItem;
 import br.edu.ufersa.model.entities.SistemaAcaiteria;
+import br.edu.ufersa.model.services.PedidoService;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,20 +29,26 @@ public class RelatoriosController {
     @FXML private Button btnSemana;
     @FXML private Button btnMes;
     @FXML private TextField txtDataReferencia;
-
     @FXML private TableView<RelatorioAdicionalItem> tabelaAdicionais;
     @FXML private TableColumn<RelatorioAdicionalItem, String> colNome;
     @FXML private TableColumn<RelatorioAdicionalItem, Integer> colQtd;
     @FXML private TableColumn<RelatorioAdicionalItem, Double> colValor;
     @FXML private TableColumn<RelatorioAdicionalItem, Integer> colEstoque;
     @FXML private Label lblTotal;
+    @FXML private TableView<Pedido> tabelaPedidos;
+    @FXML private TableColumn<Pedido, String> colData;
+    @FXML private TableColumn<Pedido, String> colCliente;
+    @FXML private TableColumn<Pedido, String> colPagamento;
+    @FXML private TableColumn<Pedido, String> colTotal;
+    @FXML private Label lblTotalPedidos;
+    @FXML private Label lblQtdPedidos;
 
     private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final SistemaAcaiteria sistema = new SistemaAcaiteria();
+    private final PedidoService pedidoService = new PedidoService();
 
     private String periodoAtual = "DIA";
-
     private LocalDate dataReferencia = LocalDate.now();
 
     private static final String ESTILO_BOTAO_ATIVO =
@@ -50,18 +59,31 @@ public class RelatoriosController {
     @FXML
     public void initialize() {
         sidebarController.destacar(sidebarController.getBtnRelatorios());
-
-        configurarColunas();
+        configurarColunasPedidos();
+        configurarColunasAdicionais();
         txtDataReferencia.setText(dataReferencia.format(FORMATO_DATA));
-
         atualizarRelatorio();
     }
 
-    private void configurarColunas() {
+    private void configurarColunasPedidos() {
+        colData.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getData().format(FORMATO_DATA)));
+
+        colCliente.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getCliente() != null
+                        ? cell.getValue().getCliente().getNome() : "—"));
+
+        colPagamento.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getFormaPagamento()));
+
+        colTotal.setCellValueFactory(cell ->
+                new SimpleStringProperty(String.format("R$ %.2f", pedidoService.calcularTotal(cell.getValue()))));
+    }
+
+    private void configurarColunasAdicionais() {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colQtd.setCellValueFactory(new PropertyValueFactory<>("quantidadeVendida"));
         colEstoque.setCellValueFactory(new PropertyValueFactory<>("estoqueAtual"));
-
         colValor.setCellValueFactory(new PropertyValueFactory<>("valorTotal"));
         colValor.setCellFactory(coluna -> new TableCellMoeda<>());
     }
@@ -123,10 +145,27 @@ public class RelatoriosController {
                 break;
         }
 
+        carregarTabelaPedidos(inicio, fim);
+        carregarTabelaAdicionais(inicio, fim);
+    }
+
+    private void carregarTabelaPedidos(LocalDate inicio, LocalDate fim) {
+        List<Pedido> pedidos = pedidoService.buscarPorPeriodo(inicio, fim);
+
+        tabelaPedidos.setItems(FXCollections.observableArrayList(pedidos));
+
+        double total = pedidos.stream()
+                .mapToDouble(pedidoService::calcularTotal)
+                .sum();
+
+        lblTotalPedidos.setText(String.format("R$ %.2f", total));
+        lblQtdPedidos.setText(pedidos.size() + " pedido(s)");
+    }
+
+    private void carregarTabelaAdicionais(LocalDate inicio, LocalDate fim) {
         List<RelatorioAdicionalItem> itens = sistema.gerarRelatorioAdicionalLista(inicio, fim);
 
-        ObservableList<RelatorioAdicionalItem> dados = FXCollections.observableArrayList(itens);
-        tabelaAdicionais.setItems(dados);
+        tabelaAdicionais.setItems(FXCollections.observableArrayList(itens));
 
         double total = itens.stream().mapToDouble(RelatorioAdicionalItem::getValorTotal).sum();
         lblTotal.setText(String.format("R$ %.2f", total));

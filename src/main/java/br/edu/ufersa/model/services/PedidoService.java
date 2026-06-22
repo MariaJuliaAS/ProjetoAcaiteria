@@ -16,9 +16,9 @@ public class PedidoService {
 
         validarItens(p);
 
-        atualizarEstoqueAdicionais(p);
-
         pedidoDAO.cadastrar(p);
+
+        atualizarEstoqueAdicionais(p);
     }
 
     public void editar(Pedido p) {
@@ -117,6 +117,19 @@ public class PedidoService {
         }
 
         return pedidoDAO.buscarPorData(data);
+    }
+
+    public List<Pedido> buscarPorPeriodo(LocalDate inicio, LocalDate fim) {
+
+        if (inicio == null) {
+            throw new RuntimeException("Data inválida");
+        }
+
+        if (fim == null) {
+            throw new RuntimeException("Data inválida");
+        }
+
+        return pedidoDAO.buscarPorPeriodo(inicio, fim);
     }
 
     public List<Pedido> buscarPorCliente(Cliente c) {
