@@ -13,7 +13,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ModalNovoPedidoController {
 
@@ -103,6 +105,9 @@ public class ModalNovoPedidoController {
         int linha = 0;
 
         for (Adicional adicional : adicionais) {
+
+            if (adicional.getQtdEstoque() <= 0) continue;
+
             CheckBox cb = new CheckBox(adicional.getNome() +
                     " (R$ " + String.format("%.2f", adicional.getPreco()) + ")");
             cb.setUserData(adicional);
@@ -218,6 +223,17 @@ public class ModalNovoPedidoController {
             return;
         }
 
+        List<Adicional> semEstoque = verificarEstoque();
+        if (!semEstoque.isEmpty()) {
+            String nomes = semEstoque.stream()
+                    .map(Adicional::getNome)
+                    .reduce((a, b) -> a + ", " + b)
+                    .orElse("");
+            mostrarErro("Estoque insuficiente para os seguintes adicionais: " + nomes +
+                    "\nRemova-os do pedido antes de finalizar.");
+            return;
+        }
+
         Pedido pedido = new Pedido();
         pedido.setCliente(cmbCliente.getValue());
         pedido.setFormaPagamento(cmbPagamento.getValue());
@@ -230,6 +246,27 @@ public class ModalNovoPedidoController {
 
         mostrarSucesso("Pedido cadastrado com sucesso!");
         fechar();
+    }
+
+    private List<Adicional> verificarEstoque() {
+        List<Adicional> atualizados = adicionalService.buscarTodos();
+        List<Adicional> semEstoque = new ArrayList<>();
+
+        Map<Integer, Integer> contagem = new HashMap<>();
+        for (ItemPedido item : itensPedido) {
+            for (Adicional a : item.getAdicionaisEscolhidos()) {
+                contagem.merge(a.getId(), 1, Integer::sum);
+            }
+        }
+
+        for (Adicional atualizado : atualizados) {
+            int qtdPedida = contagem.getOrDefault(atualizado.getId(), 0);
+            if (qtdPedida > 0 && atualizado.getQtdEstoque() < qtdPedida) {
+                semEstoque.add(atualizado);
+            }
+        }
+
+        return semEstoque;
     }
 
     private void fechar() {

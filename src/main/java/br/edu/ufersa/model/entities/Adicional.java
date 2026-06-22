@@ -56,7 +56,7 @@ public class Adicional {
     }
 
     public void setQtdEstoque(int qtdEstoque) {
-        if(qtdEstoque > 0){
+        if(qtdEstoque >= 0){
             this.qtdEstoque = qtdEstoque;
         }else{
             System.out.println("Quantidade de estoque não pode ser negativo");
