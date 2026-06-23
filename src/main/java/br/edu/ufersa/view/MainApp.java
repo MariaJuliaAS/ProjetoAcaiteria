@@ -1,5 +1,6 @@
 package br.edu.ufersa.view;
 
+import br.edu.ufersa.model.entities.Funcionario;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,7 @@ import java.io.IOException;
 public class MainApp extends Application {
 
     private static Stage stage;
-    private static String tipoUsuario = "admin";
+    private static Funcionario funcionarioLogado;
     private static Scene scene;
 
     @Override
@@ -57,7 +58,12 @@ public class MainApp extends Application {
         trocarTela("/fxml/relatorios.fxml");
     }
 
+    public static void telaFuncionarios() {
+        trocarTela("/fxml/funcionarios.fxml");
+    }
+
     public static void telaLogin() {
+        funcionarioLogado = null;
         trocarTela("/fxml/login.fxml");
     }
 
@@ -76,12 +82,16 @@ public class MainApp extends Application {
         return stage;
     }
 
-    public static String getTipoUsuario() {
-        return tipoUsuario;
+    public static Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
     }
 
-    public static void setTipoUsuario(String tipo) {
-        tipoUsuario = tipo;
+    public static void setFuncionarioLogado(Funcionario funcionario) {
+        funcionarioLogado = funcionario;
+    }
+
+    public static boolean isAdminLogado() {
+        return funcionarioLogado != null && "Admin".equalsIgnoreCase(funcionarioLogado.getTipo());
     }
 
     public static void main(String[] args) {

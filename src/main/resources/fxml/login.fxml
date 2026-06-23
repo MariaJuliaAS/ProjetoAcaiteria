@@ -66,12 +66,6 @@
                     </padding>
                 </Button>
 
-                <Button fx:id="btnAlternar" maxWidth="1.7976931348623157E308" onAction="#alternar" style="-fx-background-color: transparent; -fx-text-fill: #888888; -fx-font-size: 12px; -fx-cursor: hand;" text="Entrar como funcionário">
-                    <VBox.margin>
-                        <Insets top="8.0" />
-                    </VBox.margin>
-                </Button>
-
             </children>
         </VBox>
 

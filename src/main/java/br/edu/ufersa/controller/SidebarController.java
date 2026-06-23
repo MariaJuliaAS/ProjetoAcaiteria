@@ -26,10 +26,12 @@ public class SidebarController {
 
     @FXML
     public void initialize() {
-        lblNomeUsuario.setText(MainApp.getTipoUsuario().equals("admin") ? "Ju Maromba" : "Maicko");
-        lblCargoUsuario.setText(MainApp.getTipoUsuario().equals("admin") ? "Admin" : "Funcionário");
+        if (MainApp.getFuncionarioLogado() != null) {
+            lblNomeUsuario.setText(MainApp.getFuncionarioLogado().getNome());
+            lblCargoUsuario.setText(MainApp.getFuncionarioLogado().getTipo());
+        }
 
-        if (MainApp.getTipoUsuario().equals("funcionario")) {
+        if (!MainApp.isAdminLogado()) {
             btnFuncionarios.setVisible(false);
             btnFuncionarios.setManaged(false);
         }
@@ -66,6 +68,10 @@ public class SidebarController {
         return btnDashboard;
     }
 
+    public Button getBtnFuncionarios() {
+        return btnFuncionarios;
+    }
+
     @FXML
     private void irParaProdutos() {
         MainApp.telaProdutos();
@@ -94,6 +100,11 @@ public class SidebarController {
     @FXML
     private void irParaDashboard() {
         MainApp.telaDashboard();
+    }
+
+    @FXML
+    private void irParaFuncionarios() {
+        MainApp.telaFuncionarios();
     }
 
     @FXML

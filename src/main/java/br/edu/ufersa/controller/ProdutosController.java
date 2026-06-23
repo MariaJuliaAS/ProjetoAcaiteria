@@ -29,7 +29,7 @@ public class ProdutosController {
 
     @FXML
     public void initialize() {
-        if (MainApp.getTipoUsuario().equals("funcionario")) {
+        if (!MainApp.isAdminLogado()) {
             btnNovoProduto.setVisible(false);
             btnNovoProduto.setManaged(false);
         }

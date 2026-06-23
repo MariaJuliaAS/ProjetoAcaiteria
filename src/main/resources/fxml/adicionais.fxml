@@ -13,12 +13,10 @@
 
 <BorderPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f5f3f5;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.controller.AdicionaisController">
 
-   <!-- Sidebar reaproveitável, incluída de um arquivo separado -->
    <left>
       <fx:include source="sidebar.fxml" fx:id="sidebar" />
    </left>
 
-   <!-- Área de conteúdo -->
    <center>
       <VBox spacing="20.0">
          <padding>
@@ -26,7 +24,6 @@
          </padding>
          <children>
 
-            <!-- Cabeçalho: título + botão Novo Adicional -->
             <HBox alignment="CENTER_LEFT">
                <children>
                   <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Adicionais" />
@@ -39,7 +36,6 @@
                </children>
             </HBox>
 
-            <!-- Campo de busca + botão buscar -->
             <HBox spacing="10.0" alignment="CENTER_LEFT">
                <children>
                   <TextField fx:id="txtBusca" maxWidth="400.0" promptText="Buscar adicional..." style="-fx-background-radius: 8px; -fx-border-color: #d8d0db; -fx-border-radius: 8px;">
@@ -60,7 +56,6 @@
                </children>
             </HBox>
 
-            <!-- Container vazio onde os cards serão inseridos dinamicamente via código -->
             <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                <content>
                   <FlowPane fx:id="containerAdicionais" hgap="20.0" vgap="20.0" style="-fx-background-color: transparent;" />
