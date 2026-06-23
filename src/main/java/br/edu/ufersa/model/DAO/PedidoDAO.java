@@ -82,7 +82,6 @@ public class PedidoDAO {
 
                 if (rs.next()) {
                     item.setId(rs.getInt(1));
-
                     salvarItemAdicional(con, item);
                 }
             }
@@ -107,7 +106,24 @@ public class PedidoDAO {
                 ps.executeUpdate();
             }
         }
+    }
 
+    private Pedido construirPedido(ResultSet rs) throws SQLException {
+        Cliente c = new Cliente();
+        c.setId(rs.getInt("cliente_id"));
+        c.setNome(rs.getString("nome"));
+        c.setTelefone(rs.getString("telefone"));
+        c.setEndereco(rs.getString("endereco"));
+
+        int id = rs.getInt("id");
+
+        return new Pedido.Builder()
+                .id(id)
+                .data(rs.getDate("data").toLocalDate())
+                .formaPagamento(rs.getString("forma_pagamento"))
+                .cliente(c)
+                .itensPedido(buscarItens(id))
+                .build();
     }
 
     public List<Pedido> buscarPorData(LocalDate data) {
@@ -122,26 +138,10 @@ public class PedidoDAO {
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setDate(1, Date.valueOf(data));
-
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
-                Pedido p = new Pedido();
-                p.setId(rs.getInt("id"));
-                p.setData(rs.getDate("data").toLocalDate());
-                p.setFormaPagamento(rs.getString("forma_pagamento"));
-
-                Cliente c = new Cliente();
-                c.setId(rs.getInt("cliente_id"));
-                c.setNome(rs.getString("nome"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setEndereco(rs.getString("endereco"));
-
-                p.setCliente(c);
-                p.setItensPedido(buscarItens(p.getId()));
-
-                pedidos.add(p);
+                pedidos.add(construirPedido(rs));
             }
 
         } catch (SQLException e) {
@@ -163,26 +163,10 @@ public class PedidoDAO {
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, c.getId());
-
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
-                Pedido p = new Pedido();
-                p.setId(rs.getInt("id"));
-                p.setData(rs.getDate("data").toLocalDate());
-                p.setFormaPagamento(rs.getString("forma_pagamento"));
-
-                Cliente cliente = new Cliente();
-                cliente.setId(rs.getInt("cliente_id"));
-                cliente.setNome(rs.getString("nome"));
-                cliente.setTelefone(rs.getString("telefone"));
-                cliente.setEndereco(rs.getString("endereco"));
-
-                p.setCliente(cliente);
-                p.setItensPedido(buscarItens(p.getId()));
-
-                pedidos.add(p);
+                pedidos.add(construirPedido(rs));
             }
 
         } catch (SQLException e) {
@@ -206,27 +190,10 @@ public class PedidoDAO {
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
 
             ps.setInt(1, produto.getId());
-
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
-                Pedido p = new Pedido();
-                p.setId(rs.getInt("id"));
-                p.setData(rs.getDate("data").toLocalDate());
-                p.setFormaPagamento(rs.getString("forma_pagamento"));
-
-                Cliente c = new Cliente();
-                c.setId(rs.getInt("cliente_id"));
-                c.setNome(rs.getString("nome"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setEndereco(rs.getString("endereco"));
-
-                p.setCliente(c);
-
-                p.setItensPedido(buscarItens(p.getId()));
-
-                pedidos.add(p);
+                pedidos.add(construirPedido(rs));
             }
 
         } catch (SQLException e) {
@@ -251,27 +218,10 @@ public class PedidoDAO {
 
             ps.setDate(1, Date.valueOf(inicio));
             ps.setDate(2, Date.valueOf(fim));
-
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
-                Pedido p = new Pedido();
-                p.setId(rs.getInt("id"));
-                p.setData(rs.getDate("data").toLocalDate());
-                p.setFormaPagamento(rs.getString("forma_pagamento"));
-
-                Cliente c = new Cliente();
-                c.setId(rs.getInt("cliente_id"));
-                c.setNome(rs.getString("nome"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setEndereco(rs.getString("endereco"));
-
-                p.setCliente(c);
-
-                p.setItensPedido(buscarItens(p.getId()));
-
-                pedidos.add(p);
+                pedidos.add(construirPedido(rs));
             }
 
         } catch (SQLException e) {
@@ -294,21 +244,7 @@ public class PedidoDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Pedido p = new Pedido();
-                p.setId(rs.getInt("id"));
-                p.setData(rs.getDate("data").toLocalDate());
-                p.setFormaPagamento(rs.getString("forma_pagamento"));
-
-                Cliente c = new Cliente();
-                c.setId(rs.getInt("cliente_id"));
-                c.setNome(rs.getString("nome"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setEndereco(rs.getString("endereco"));
-
-                p.setCliente(c);
-                p.setItensPedido(buscarItens(p.getId()));
-
-                return p;
+                return construirPedido(rs);
             }
 
         } catch (SQLException e) {
@@ -330,21 +266,7 @@ public class PedidoDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Pedido p = new Pedido();
-                p.setId(rs.getInt("id"));
-                p.setData(rs.getDate("data").toLocalDate());
-                p.setFormaPagamento(rs.getString("forma_pagamento"));
-
-                Cliente c = new Cliente();
-                c.setId(rs.getInt("cliente_id"));
-                c.setNome(rs.getString("nome"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setEndereco(rs.getString("endereco"));
-
-                p.setCliente(c);
-                p.setItensPedido(buscarItens(p.getId()));
-
-                pedidos.add(p);
+                pedidos.add(construirPedido(rs));
             }
 
         } catch (SQLException e) {

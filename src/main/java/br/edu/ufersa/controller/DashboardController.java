@@ -31,7 +31,7 @@ public class DashboardController {
     public void initialize() {
         sidebarController.destacar(sidebarController.getBtnDashboard());
 
-        lblSaudacao.setText("Olá, Ju Maromba!");
+        lblSaudacao.setText("Olá, " + MainApp.getFuncionarioLogado().getNome());
 
         carregarResumoDoDia();
     }

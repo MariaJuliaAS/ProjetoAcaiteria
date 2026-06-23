@@ -13,38 +13,22 @@ public class Pedido {
 
     private static List<Pedido> pedidos = new ArrayList<>();
 
-    public Pedido(){this.itensPedido = new ArrayList<>();}
-
-    public Pedido(int id,LocalDate data,Cliente cliente, String formaPagamento){
-        setId(id);
-        setData(data);
-        setCliente(cliente);
+    private Pedido() {
         this.itensPedido = new ArrayList<>();
-        setFormaPagamento(formaPagamento);
     }
 
-    public int getId() {return id;}
+    public int getId() { return id; }
+    public Cliente getCliente() { return cliente; }
+    public LocalDate getData() { return data; }
+    public List<ItemPedido> getItensPedido() { return itensPedido; }
+    public String getFormaPagamento() { return formaPagamento; }
+    public static List<Pedido> getPedidos() { return pedidos; }
 
-    public Cliente getCliente() {return cliente;}
-
-    public LocalDate getData() {return data;}
-
-    public List<ItemPedido> getItensPedido() {return itensPedido;}
-
-    public String getFormaPagamento() {return formaPagamento;}
-
-    public static List<Pedido> getPedidos() {return pedidos;}
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
+    public void setId(int id) { this.id = id; }
+    public void setData(LocalDate data) { this.data = data; }
 
     public void setCliente(Cliente cliente) {
-        if (cliente == null){
+        if (cliente == null) {
             System.out.println("Cliente inválido");
             return;
         }
@@ -52,7 +36,7 @@ public class Pedido {
     }
 
     public void setItensPedido(List<ItemPedido> itensPedido) {
-        if(itensPedido == null){
+        if (itensPedido == null) {
             System.out.println("Pedidos precisam de no mínimo 1 item");
             return;
         }
@@ -60,10 +44,53 @@ public class Pedido {
     }
 
     public void setFormaPagamento(String formaPagamento) {
-        if (formaPagamento == null || formaPagamento.isEmpty()){
+        if (formaPagamento == null || formaPagamento.isEmpty()) {
             System.out.println("Forma de pagamento inválido");
             return;
         }
         this.formaPagamento = formaPagamento;
+    }
+
+    public static class Builder {
+        private int id;
+        private LocalDate data;
+        private Cliente cliente;
+        private List<ItemPedido> itensPedido = new ArrayList<>();
+        private String formaPagamento;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder data(LocalDate data) {
+            this.data = data;
+            return this;
+        }
+
+        public Builder cliente(Cliente cliente) {
+            this.cliente = cliente;
+            return this;
+        }
+
+        public Builder itensPedido(List<ItemPedido> itensPedido) {
+            this.itensPedido = itensPedido;
+            return this;
+        }
+
+        public Builder formaPagamento(String formaPagamento) {
+            this.formaPagamento = formaPagamento;
+            return this;
+        }
+
+        public Pedido build() {
+            Pedido pedido = new Pedido();
+            pedido.setId(id);
+            pedido.setData(data);
+            pedido.setCliente(cliente);
+            pedido.setItensPedido(itensPedido);
+            pedido.setFormaPagamento(formaPagamento);
+            return pedido;
+        }
     }
 }

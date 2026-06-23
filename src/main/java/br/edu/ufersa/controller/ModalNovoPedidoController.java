@@ -232,11 +232,12 @@ public class ModalNovoPedidoController {
             return;
         }
 
-        Pedido pedido = new Pedido();
-        pedido.setCliente(cmbCliente.getValue());
-        pedido.setFormaPagamento(cmbPagamento.getValue());
-        pedido.setData(LocalDate.now());
-        pedido.setItensPedido(itensPedido);
+        Pedido pedido = new Pedido.Builder()
+                .cliente(cmbCliente.getValue())
+                .formaPagamento(cmbPagamento.getValue())
+                .data(LocalDate.now())
+                .itensPedido(itensPedido)
+                .build();
 
         sistema.cadastrarPedido(pedido);
 
