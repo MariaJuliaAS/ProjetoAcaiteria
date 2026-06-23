@@ -123,10 +123,11 @@ public class ModalNovoPedidoController {
     private void adicionarProduto(Produto produto) {
         List<Adicional> adicionaisMarcados = obterAdicionaisSelecionados();
 
-        ItemPedido item = new ItemPedido();
-        item.setProduto(produto);
-        item.setQuantidade(1);
-        item.setAdicionaisEscolhidos(new ArrayList<>(adicionaisMarcados));
+        ItemPedido item = new ItemPedido.Builder()
+                .produto(produto)
+                .quantidade(1)
+                .adicionaisEscolhidos(new ArrayList<>(adicionaisMarcados))
+                .build();
 
         itensPedido.add(item);
         listaItens.getItems().add(item);

@@ -290,17 +290,20 @@ public class PedidoDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                ItemPedido item = new ItemPedido();
-                item.setId(rs.getInt("id"));
-                item.setQuantidade(rs.getInt("quantidade"));
+                Produto pr = new Produto(
+                        rs.getInt("produto_id"),
+                        rs.getString("nome"),
+                        rs.getDouble("preco")
+                );
 
-                Produto pr = new Produto();
-                pr.setId(rs.getInt("produto_id"));
-                pr.setNome(rs.getString("nome"));
-                pr.setPreco(rs.getDouble("preco"));
+                int itemId = rs.getInt("id");
 
-                item.setProduto(pr);
-                item.setAdicionaisEscolhidos(buscarAdicionais(item.getId()));
+                ItemPedido item = new ItemPedido.Builder()
+                        .id(itemId)
+                        .quantidade(rs.getInt("quantidade"))
+                        .produto(pr)
+                        .adicionaisEscolhidos(buscarAdicionais(itemId))
+                        .build();
 
                 itens.add(item);
             }
