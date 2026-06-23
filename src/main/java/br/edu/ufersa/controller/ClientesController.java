@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Cliente;
-import br.edu.ufersa.model.services.ClienteService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,7 +23,7 @@ public class ClientesController {
     @FXML private Button btnNovoCliente;
     @FXML private SidebarController sidebarController;
 
-    private final ClienteService service = new ClienteService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     @FXML
     public void initialize() {
@@ -32,7 +32,7 @@ public class ClientesController {
     }
 
     private void carregarTodos() {
-        List<Cliente> clientes = service.buscarTodos();
+        List<Cliente> clientes = sistema.buscarClientesTodos();
         carregarCards(clientes);
     }
 
@@ -71,7 +71,7 @@ public class ClientesController {
         }
 
         List<Cliente> resultado =
-                service.buscarPorNome(termo.trim());
+                sistema.buscarClientesPorNome(termo.trim());
 
         carregarCards(resultado);
     }

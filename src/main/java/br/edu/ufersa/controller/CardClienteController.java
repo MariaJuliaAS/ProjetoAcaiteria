@@ -1,9 +1,8 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Cliente;
 import br.edu.ufersa.model.entities.Pedido;
-import br.edu.ufersa.model.services.ClienteService;
-import br.edu.ufersa.model.services.PedidoService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,7 +22,7 @@ public class CardClienteController {
     @FXML private Label lblEnd;
 
     private Cliente cliente;
-    private final ClienteService service = new ClienteService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private Runnable onAlterado;
 
@@ -48,8 +47,7 @@ public class CardClienteController {
         confirmacao.showAndWait().ifPresent(resposta -> {
             if (resposta == ButtonType.OK) {
 
-                PedidoService pedidoService = new PedidoService();
-                List<Pedido> pedidos = pedidoService.buscarPorCliente(cliente);
+                List<Pedido> pedidos = sistema.buscarPedidoPorCliente(cliente);
 
                 if (!pedidos.isEmpty()) {
                     mostrarErro("Este cliente não pode ser excluído porque já possui pedidos vinculados.");
@@ -57,7 +55,7 @@ public class CardClienteController {
                 }
 
                 try {
-                    service.excluir(cliente);
+                    sistema.excluirCliente(cliente);
                     if (onAlterado != null) onAlterado.run();
                 } catch (IllegalArgumentException e) {
                     mostrarErro(e.getMessage());

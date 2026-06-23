@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Cliente;
-import br.edu.ufersa.model.services.ClienteService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,7 +15,7 @@ public class ModalEditarClienteController {
     @FXML private TextField txtEndereco;
     @FXML private Button btnSalvar;
 
-    private final ClienteService service = new ClienteService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private Cliente cliente;
     private Runnable onSalvar;
@@ -57,7 +57,7 @@ public class ModalEditarClienteController {
             cliente.setTelefone(telefone);
             cliente.setEndereco(endereco);
 
-            service.editar(cliente);
+            sistema.editarCliente(cliente);
 
             if (onSalvar != null) onSalvar.run();
             fechar();

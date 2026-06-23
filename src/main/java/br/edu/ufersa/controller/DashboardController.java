@@ -1,9 +1,7 @@
 package br.edu.ufersa.controller;
 
 import br.edu.ufersa.model.entities.Pedido;
-import br.edu.ufersa.model.entities.SistemaAcaiteria;
-import br.edu.ufersa.model.services.ClienteService;
-import br.edu.ufersa.model.services.ProdutoService;
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,8 +26,6 @@ public class DashboardController {
     @FXML private Button btnVerEstoque;
 
     private final SistemaAcaiteria sistema = new SistemaAcaiteria();
-    private final ProdutoService produtoService = new ProdutoService();
-    private final ClienteService clienteService = new ClienteService();
 
     @FXML
     public void initialize() {
@@ -41,13 +37,13 @@ public class DashboardController {
     }
 
     private void carregarResumoDoDia() {
-        List<Pedido> pedidosHoje = sistema.buscarPedido(LocalDate.now());
+        List<Pedido> pedidosHoje = sistema.buscarPedidoPorData(LocalDate.now());
 
         int qtdPedidos = (pedidosHoje == null) ? 0 : pedidosHoje.size();
         double faturamento = sistema.calcularFaturamento(pedidosHoje);
 
-        int qtdClientes = clienteService.buscarTodos().size();
-        int qtdProdutos = produtoService.buscarTodos().size();
+        int qtdClientes = sistema.buscarClientesTodos().size();
+        int qtdProdutos = sistema.buscarProdutoTodos().size();
 
         lblQtdPedidos.setText(String.valueOf(qtdPedidos));
         lblFaturamento.setText(String.format("R$ %.2f", faturamento));

@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Funcionario;
-import br.edu.ufersa.model.services.FuncionarioService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,7 +21,7 @@ public class ModalFuncionarioController {
     @FXML private ComboBox<String> cmbCargo;
     @FXML private Button btnSalvar;
 
-    private final FuncionarioService service = new FuncionarioService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private Funcionario funcionario;
     private Runnable onSalvar;
@@ -62,7 +62,7 @@ public class ModalFuncionarioController {
                 }
 
                 Funcionario novo = new Funcionario(0, nome, login, senhaDigitada, cargo);
-                service.cadastrarFuncionario(novo);
+                sistema.cadastrarFuncionario(novo);
 
             } else {
                 String senhaFinal = (senhaDigitada == null || senhaDigitada.isBlank())
@@ -74,7 +74,7 @@ public class ModalFuncionarioController {
                 funcionario.setSenha(senhaFinal);
                 funcionario.setTipo(cargo);
 
-                service.editarFuncionario(funcionario);
+                sistema.editarFuncionario(funcionario);
             }
 
             if (onSalvar != null) {

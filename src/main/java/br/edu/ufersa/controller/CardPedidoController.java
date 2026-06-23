@@ -1,8 +1,8 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.ItemPedido;
 import br.edu.ufersa.model.entities.Pedido;
-import br.edu.ufersa.model.services.PedidoService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,7 +25,7 @@ public class CardPedidoController {
     @FXML private Label lblFormaPagamento;
 
     private Pedido pedido;
-    private final PedidoService service = new PedidoService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private Runnable onAlterado;
 
@@ -39,7 +39,7 @@ public class CardPedidoController {
                 .sum();
         lblQtdItem.setText(qtdItem + (qtdItem > 1 ? " Itens" : " Item"));
         lblFormaPagamento.setText(pedido.getFormaPagamento());
-        lblValor.setText(String.format("R$ %.2f",service.calcularTotal(pedido)));
+        lblValor.setText(String.format("R$ %.2f",sistema.calcularTotalPedidos(pedido)));
     }
 
     public void setOnAlterado(Runnable onAlterado) {
@@ -56,7 +56,7 @@ public class CardPedidoController {
         confirmacao.showAndWait().ifPresent(resposta -> {
             if (resposta.getText().equalsIgnoreCase("OK")) {
                 try {
-                    service.excluir(pedido);
+                    sistema.excluirPedido(pedido);
                     if (onAlterado != null) {
                         onAlterado.run();
                     }

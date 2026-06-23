@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Funcionario;
-import br.edu.ufersa.model.services.FuncionarioService;
 import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +27,7 @@ public class CardFuncionarioController {
     @FXML private Button btnExcluir;
 
     private Funcionario funcionario;
-    private final FuncionarioService service = new FuncionarioService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private Runnable onAlterado;
 
@@ -60,7 +60,7 @@ public class CardFuncionarioController {
         confirmacao.showAndWait().ifPresent(resposta -> {
             if (resposta == ButtonType.OK) {
                 try {
-                    service.excluirFuncionario(funcionario);
+                    sistema.excluirFuncionario(funcionario);
                     if (onAlterado != null) {
                         onAlterado.run();
                     }

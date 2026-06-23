@@ -1,10 +1,8 @@
-package br.edu.ufersa.model.entities;
+package br.edu.ufersa.facade;
 
 import br.edu.ufersa.model.DAO.PedidoDAO;
-import br.edu.ufersa.model.services.AdicionalService;
-import br.edu.ufersa.model.services.ClienteService;
-import br.edu.ufersa.model.services.PedidoService;
-import br.edu.ufersa.model.services.ProdutoService;
+import br.edu.ufersa.model.entities.*;
+import br.edu.ufersa.model.services.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,48 +18,126 @@ public class SistemaAcaiteria {
     private ProdutoService produtoService;
     private ClienteService clienteService;
     private PedidoService pedidoService;
-
+    private FuncionarioService funcionarioService;
 
     public SistemaAcaiteria() {
         this.adicionalService = new AdicionalService();
         this.produtoService = new ProdutoService();
         this.clienteService = new ClienteService();
         this.pedidoService = new PedidoService();
+        this.funcionarioService = new FuncionarioService();
     }
 
-    public List<Cliente> buscarClientesNome(String nome){
+    public void cadastrarCliente(Cliente cliente){
+        clienteService.cadastrar(cliente);
+    }
+
+    public void cadastrarProduto(Produto produto){
+        produtoService.cadastrarProduto(produto);
+    }
+
+    public void cadastrarAdicional(Adicional adicional){
+        adicionalService.cadastrarAdicional(adicional);
+    }
+
+    public void cadastrarPedido(Pedido pedido){
+        pedidoService.cadastrar(pedido);
+    }
+
+    public void editarCliente(Cliente cliente) {
+        clienteService.editar(cliente);
+    }
+
+    public void excluirCliente(Cliente c) {
+        clienteService.excluir(c);
+    }
+
+    public void editarProduto(Produto produto) {
+        produtoService.editarProduto(produto);
+    }
+
+    public void excluirProduto(Produto p) {
+        produtoService.excluirProduto(p);
+    }
+
+    public void editarAdicional(Adicional adicional) {
+        adicionalService.editarAdicional(adicional);
+    }
+
+    public void excluirAdicional(Adicional adicional) {
+        adicionalService.excluirAdicional(adicional);
+    }
+
+    public void excluirPedido(Pedido pedido) {
+        pedidoService.excluir(pedido);
+    }
+
+    public void cadastrarFuncionario(Funcionario funcionario) {
+        funcionarioService.cadastrarFuncionario(funcionario);
+    }
+
+    public void editarFuncionario(Funcionario funcionario) {
+        funcionarioService.editarFuncionario(funcionario);
+    }
+
+    public void excluirFuncionario(Funcionario funcionario) {
+        funcionarioService.excluirFuncionario(funcionario);
+    }
+
+    public Funcionario autenticar(String login, String senha){
+        return funcionarioService.autenticar(login, senha);
+    }
+
+    public  List<Funcionario> buscarFuncionariosTodos(){
+        return funcionarioService.buscarTodos();
+    }
+
+    public List<Cliente> buscarClientesTodos(){
+        return clienteService.buscarTodos();
+    }
+
+    public List<Cliente> buscarClientesPorNome(String nome){
         return clienteService.buscarPorNome(nome);
     }
 
-    public List<Pedido> buscarPedido(Cliente cliente){
+    public List<Pedido> buscarPedidosTodos(){
+        return pedidoService.buscarTodos();
+    }
+
+    public List<Pedido> buscarPedidoPorCliente(Cliente cliente){
         return pedidoService.buscarPorCliente(cliente);
     }
 
-    public List<Pedido> buscarPedido(Produto produto){
+    public List<Pedido> buscarPedidoPorProduto(Produto produto){
         return pedidoService.buscarPorProduto(produto);
     }
 
-    public List<Pedido> buscarPedido(LocalDate data){
+    public List<Pedido> buscarPedidoPorData(LocalDate data){
         return pedidoService.buscarPorData(data);
     }
 
-    public List<Adicional> buscarAdicionais(String nome){
-        List<Adicional> resultado = new ArrayList<>();
+    public List<Pedido> buscarPedidoPorPeriodo(LocalDate inicio, LocalDate fim){
+        return pedidoService.buscarPorPeriodo(inicio, fim);
+    }
 
-        if(nome == null || nome.isEmpty()){
-            throw  new IllegalArgumentException("Nome não pode ser vazio!");
-        }
-
-        for (Adicional ad: adicionalService.buscarPorNome(nome)){
-            if(ad.getNome().toLowerCase().contains(nome.toLowerCase())){
-                resultado.add(ad);
-            }
-        }
-        return resultado;
+    public List<Adicional> buscarAdicionaisPorNome(String nome) {
+        return adicionalService.buscarPorNome(nome);
     }
 
     public String gerarRelatorioPedido(LocalDate inicio, LocalDate fim){
         return pedidoService.gerarRelatorio(inicio,fim);
+    }
+
+    public List<Produto> buscarProdutoTodos(){
+        return produtoService.buscarTodos();
+    }
+
+    public List<Adicional> buscarAdicionaisTodos(){
+        return adicionalService.buscarTodos();
+    }
+
+    public double calcularTotalPedidos(Pedido pedido){
+        return pedidoService.calcularTotal(pedido);
     }
 
     public double calcularFaturamento(List<Pedido> pedidos){
@@ -162,5 +238,9 @@ public class SistemaAcaiteria {
         }
 
         return resultado;
+    }
+
+    public String gerarNotaPedido(Pedido pedido){
+        return pedidoService.gerarNota(pedido);
     }
 }

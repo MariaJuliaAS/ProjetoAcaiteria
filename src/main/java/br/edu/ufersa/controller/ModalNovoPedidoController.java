@@ -1,5 +1,6 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.*;
 import br.edu.ufersa.model.services.*;
 import javafx.fxml.FXMLLoader;
@@ -28,10 +29,7 @@ public class ModalNovoPedidoController {
     @FXML private Label lblTotal;
     @FXML private Button btnFinalizar;
 
-    private final ProdutoService produtoService = new ProdutoService();
-    private final AdicionalService adicionalService = new AdicionalService();
-    private final ClienteService clienteService = new ClienteService();
-    private final PedidoService pedidoService = new PedidoService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private final List<ItemPedido> itensPedido = new ArrayList<>();
     private final List<CheckBox> checkBoxesAdicionais = new ArrayList<>();
@@ -52,7 +50,7 @@ public class ModalNovoPedidoController {
     }
 
     private void carregarClientes() {
-        List<Cliente> clientes = clienteService.buscarTodos();
+        List<Cliente> clientes = sistema.buscarClientesTodos();
         cmbCliente.getItems().addAll(clientes);
 
         cmbCliente.setCellFactory(lv -> new ListCell<>() {
@@ -76,7 +74,7 @@ public class ModalNovoPedidoController {
     }
 
     private void carregarProdutos() {
-        List<Produto> produtos = produtoService.buscarTodos();
+        List<Produto> produtos = sistema.buscarProdutoTodos();
         containerProdutos.getChildren().clear();
 
         for (Produto produto : produtos) {
@@ -97,7 +95,7 @@ public class ModalNovoPedidoController {
     }
 
     private void carregarAdicionais() {
-        List<Adicional> adicionais = adicionalService.buscarTodos();
+        List<Adicional> adicionais = sistema.buscarAdicionaisTodos();
         gridAdicionais.getChildren().clear();
         checkBoxesAdicionais.clear();
 
@@ -240,7 +238,7 @@ public class ModalNovoPedidoController {
         pedido.setData(LocalDate.now());
         pedido.setItensPedido(itensPedido);
 
-        pedidoService.cadastrar(pedido);
+        sistema.cadastrarPedido(pedido);
 
         if (onSalvar != null) onSalvar.run();
 
@@ -249,7 +247,7 @@ public class ModalNovoPedidoController {
     }
 
     private List<Adicional> verificarEstoque() {
-        List<Adicional> atualizados = adicionalService.buscarTodos();
+        List<Adicional> atualizados = sistema.buscarAdicionaisTodos();
         List<Adicional> semEstoque = new ArrayList<>();
 
         Map<Integer, Integer> contagem = new HashMap<>();

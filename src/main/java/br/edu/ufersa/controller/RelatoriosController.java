@@ -2,11 +2,9 @@ package br.edu.ufersa.controller;
 
 import br.edu.ufersa.model.entities.Pedido;
 import br.edu.ufersa.model.entities.RelatorioAdicionalItem;
-import br.edu.ufersa.model.entities.SistemaAcaiteria;
-import br.edu.ufersa.model.services.PedidoService;
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -46,7 +44,6 @@ public class RelatoriosController {
     private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final SistemaAcaiteria sistema = new SistemaAcaiteria();
-    private final PedidoService pedidoService = new PedidoService();
 
     private String periodoAtual = "DIA";
     private LocalDate dataReferencia = LocalDate.now();
@@ -77,7 +74,7 @@ public class RelatoriosController {
                 new SimpleStringProperty(cell.getValue().getFormaPagamento()));
 
         colTotal.setCellValueFactory(cell ->
-                new SimpleStringProperty(String.format("R$ %.2f", pedidoService.calcularTotal(cell.getValue()))));
+                new SimpleStringProperty(String.format("R$ %.2f", sistema.calcularTotalPedidos(cell.getValue()))));
     }
 
     private void configurarColunasAdicionais() {
@@ -150,12 +147,12 @@ public class RelatoriosController {
     }
 
     private void carregarTabelaPedidos(LocalDate inicio, LocalDate fim) {
-        List<Pedido> pedidos = pedidoService.buscarPorPeriodo(inicio, fim);
+        List<Pedido> pedidos = sistema.buscarPedidoPorPeriodo(inicio, fim);
 
         tabelaPedidos.setItems(FXCollections.observableArrayList(pedidos));
 
         double total = pedidos.stream()
-                .mapToDouble(pedidoService::calcularTotal)
+                .mapToDouble(sistema::calcularTotalPedidos)
                 .sum();
 
         lblTotalPedidos.setText(String.format("R$ %.2f", total));

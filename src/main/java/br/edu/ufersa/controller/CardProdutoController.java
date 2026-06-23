@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Produto;
-import br.edu.ufersa.model.services.ProdutoService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +27,7 @@ public class CardProdutoController {
     @FXML private Button btnExcluir;
 
     private Produto produto;
-    private final ProdutoService service = new ProdutoService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private Runnable onAlterado;
 
@@ -54,7 +54,7 @@ public class CardProdutoController {
         confirmacao.showAndWait().ifPresent(resposta -> {
             if (resposta == ButtonType.OK) {
                 try {
-                    service.excluirProduto(produto);
+                    sistema.excluirProduto(produto);
                     if (onAlterado != null) {
                         onAlterado.run();
                     }

@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Funcionario;
-import br.edu.ufersa.model.services.FuncionarioService;
 import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -15,7 +15,7 @@ public class LoginController {
     @FXML private PasswordField txtSenha;
     @FXML private Button btnEntrar;
 
-    private final FuncionarioService funcionarioService = new FuncionarioService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     @FXML
     private void entrar() {
@@ -32,7 +32,7 @@ public class LoginController {
             return;
         }
 
-        Funcionario funcionario = funcionarioService.autenticar(usuario, senha);
+        Funcionario funcionario = sistema.autenticar(usuario, senha);
 
         if (funcionario == null) {
             mostrarErro("Usuário ou senha incorretos.");

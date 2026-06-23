@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Funcionario;
-import br.edu.ufersa.model.services.FuncionarioService;
 import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +22,7 @@ public class FuncionariosController {
 
     @FXML private SidebarController sidebarController;
 
-    private final FuncionarioService service = new FuncionarioService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     @FXML
     public void initialize() {
@@ -37,7 +37,7 @@ public class FuncionariosController {
     }
 
     private void carregarTodos() {
-        List<Funcionario> funcionarios = service.buscarTodos();
+        List<Funcionario> funcionarios = sistema.buscarFuncionariosTodos();
         carregarCards(funcionarios);
     }
 

@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Adicional;
-import br.edu.ufersa.model.services.AdicionalService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,7 +16,7 @@ public class ModalNovoAdicionalController {
     @FXML private Button btnAdicionar;
     @FXML private Button btnFechar;
 
-    private final AdicionalService service = new AdicionalService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private Runnable onSalvar;
 
@@ -40,7 +40,7 @@ public class ModalNovoAdicionalController {
 
         try {
             Adicional novo = new Adicional(0, nome, preco, estoque);
-            service.cadastrarAdicional(novo);
+            sistema.cadastrarAdicional(novo);
 
             if (onSalvar != null) {
                 onSalvar.run();

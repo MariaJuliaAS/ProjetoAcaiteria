@@ -1,9 +1,8 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Adicional;
 import br.edu.ufersa.model.entities.Produto;
-import br.edu.ufersa.model.services.AdicionalService;
-import br.edu.ufersa.model.services.ProdutoService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,8 +23,7 @@ public class ModalProdutoController {
     @FXML private GridPane gridAdicionais;
     @FXML private Button btnSalvar;
 
-    private final ProdutoService produtoService = new ProdutoService();
-    private final AdicionalService adicionalService = new AdicionalService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     private final List<CheckBox> checkBoxesAdicionais = new ArrayList<>();
 
@@ -53,7 +51,7 @@ public class ModalProdutoController {
     }
 
     private void montarChecklistAdicionais() {
-        List<Adicional> todos = adicionalService.buscarTodos();
+        List<Adicional> todos = sistema.buscarAdicionaisTodos();
 
         int coluna = 0;
         int linha = 0;
@@ -116,12 +114,12 @@ public class ModalProdutoController {
             if (produto == null) {
                 Produto novo = new Produto(0, nome, preco);
                 novo.setAdicionaisDisponiveis(adicionaisSelecionados);
-                produtoService.cadastrarProduto(novo);
+                sistema.cadastrarProduto(novo);
             } else {
                 produto.setNome(nome);
                 produto.setPreco(preco);
                 produto.setAdicionaisDisponiveis(adicionaisSelecionados);
-                produtoService.editarProduto(produto);
+                sistema.editarProduto(produto);
             }
 
             if (onSalvar != null) {

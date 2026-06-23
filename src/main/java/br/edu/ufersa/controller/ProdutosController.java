@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Produto;
-import br.edu.ufersa.model.services.ProdutoService;
 import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +25,7 @@ public class ProdutosController {
 
     @FXML private SidebarController sidebarController;
 
-    private final ProdutoService service = new ProdutoService();
+    private final SistemaAcaiteria service = new SistemaAcaiteria();
 
     @FXML
     public void initialize() {
@@ -38,7 +38,7 @@ public class ProdutosController {
     }
 
     private void carregarTodos() {
-        List<Produto> produtos = service.buscarTodos();
+        List<Produto> produtos = service.buscarProdutoTodos();
         carregarCards(produtos);
     }
 
@@ -71,7 +71,7 @@ public class ProdutosController {
             return;
         }
 
-        List<Produto> todos = service.buscarTodos();
+        List<Produto> todos = service.buscarProdutoTodos();
         List<Produto> filtrados = todos.stream()
                 .filter(p -> p.getNome().toLowerCase().contains(termo.trim().toLowerCase()))
                 .toList();

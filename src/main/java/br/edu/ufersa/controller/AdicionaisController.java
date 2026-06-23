@@ -1,7 +1,7 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Adicional;
-import br.edu.ufersa.model.services.AdicionalService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,7 +24,7 @@ public class AdicionaisController {
 
     @FXML private SidebarController sidebarController;
 
-    private final AdicionalService service = new AdicionalService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     @FXML
     public void initialize() {
@@ -33,7 +33,7 @@ public class AdicionaisController {
     }
 
     private void carregarTodos() {
-        List<Adicional> adicionais = service.buscarTodos();
+        List<Adicional> adicionais = sistema.buscarAdicionaisTodos();
         carregarCards(adicionais);
     }
 
@@ -67,7 +67,7 @@ public class AdicionaisController {
             return;
         }
 
-        List<Adicional> resultado = service.buscarPorNome(termo.trim());
+        List<Adicional> resultado = sistema.buscarAdicionaisPorNome(termo.trim());
         carregarCards(resultado);
     }
 

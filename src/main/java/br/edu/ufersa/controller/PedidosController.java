@@ -1,11 +1,9 @@
 package br.edu.ufersa.controller;
 
+import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Cliente;
 import br.edu.ufersa.model.entities.Pedido;
 import br.edu.ufersa.model.entities.Produto;
-import br.edu.ufersa.model.services.ClienteService;
-import br.edu.ufersa.model.services.PedidoService;
-import br.edu.ufersa.model.services.ProdutoService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,9 +31,7 @@ public class PedidosController {
     @FXML private ComboBox<Produto> cmbProduto;
     @FXML private SidebarController sidebarController;
 
-    private final PedidoService service = new PedidoService();
-    private final ClienteService clienteService = new ClienteService();
-    private final ProdutoService produtoService = new ProdutoService();
+    private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
     @FXML
     public void initialize() {
@@ -45,7 +41,7 @@ public class PedidosController {
     }
 
     private void carregarTodos() {
-        List<Pedido> pedidos = service.buscarTodos();
+        List<Pedido> pedidos = sistema.buscarPedidosTodos();
         carregarCards(pedidos);
     }
 
@@ -70,7 +66,7 @@ public class PedidosController {
     }
 
     private void carregarProdutosComboBox() {
-        List<Produto> produtos = produtoService.buscarTodos();
+        List<Produto> produtos = sistema.buscarProdutoTodos();
         cmbProduto.getItems().addAll(produtos);
 
         cmbProduto.setCellFactory(lv -> new ListCell<>() {
@@ -101,7 +97,7 @@ public class PedidosController {
         try {
             LocalDate data = LocalDate.parse(termo,
                     DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            List<Pedido> resultado = service.buscarPorData(data);
+            List<Pedido> resultado = sistema.buscarPedidoPorData(data);
             carregarCards(resultado);
         } catch (DateTimeParseException e) {
             mostrarErro("Digite a data no formato dd/MM/yyyy.");
@@ -117,7 +113,7 @@ public class PedidosController {
             return;
         }
 
-        List<Cliente> clientes = clienteService.buscarPorNome(termo);
+        List<Cliente> clientes = sistema.buscarClientesPorNome(termo);
 
         if (clientes.isEmpty()) {
             mostrarErro("Nenhum cliente encontrado com esse nome.");
@@ -126,7 +122,7 @@ public class PedidosController {
 
         List<Pedido> resultado = new ArrayList<>();
         for (Cliente cliente : clientes) {
-            resultado.addAll(service.buscarPorCliente(cliente));
+            resultado.addAll(sistema.buscarPedidoPorCliente(cliente));
         }
 
         carregarCards(resultado);
@@ -141,7 +137,7 @@ public class PedidosController {
             return;
         }
 
-        List<Pedido> resultado = service.buscarPorProduto(produto);
+        List<Pedido> resultado = sistema.buscarPedidoPorProduto(produto);
         carregarCards(resultado);
     }
 
