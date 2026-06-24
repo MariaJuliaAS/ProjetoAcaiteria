@@ -10,12 +10,10 @@
 
 <BorderPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f5f3f5;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.controller.DashboardController">
 
-   <!-- Sidebar reaproveitável, incluída de um arquivo separado -->
    <left>
       <fx:include fx:id="sidebar" source="sidebar.fxml" />
    </left>
 
-   <!-- Área de conteúdo -->
    <center>
       <VBox spacing="24.0">
          <padding>
@@ -23,7 +21,6 @@
          </padding>
          <children>
 
-            <!-- Cabeçalho de boas-vindas -->
             <VBox spacing="4.0">
                <children>
                   <Label fx:id="lblSaudacao" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Olá!" />
@@ -31,7 +28,6 @@
                </children>
             </VBox>
 
-            <!-- Linha com os 4 cards de resumo -->
             <HBox spacing="20.0">
                <children>
 
@@ -82,7 +78,6 @@
                </children>
             </HBox>
 
-            <!-- Ações Rápidas -->
             <VBox spacing="14.0">
                <children>
                   <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Ações Rápidas" />
@@ -99,7 +94,7 @@
                            </graphic>
                         </Button>
 
-                        <Button fx:id="btnNovoCliente" alignment="CENTER_LEFT" mnemonicParsing="false" style="-fx-background-color: white; -fx-text-fill: #1a1a1a; -fx-font-size: 13px; -fx-font-weight: bold; -fx-border-color: #e0e0e0; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-cursor: hand;" text="Novo Cliente" HBox.hgrow="ALWAYS">
+                        <Button fx:id="btnNovoCliente" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#irParaNovoCliente" style="-fx-background-color: white; -fx-text-fill: #1a1a1a; -fx-font-size: 13px; -fx-font-weight: bold; -fx-border-color: #e0e0e0; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-cursor: hand;" text="Novo Cliente" HBox.hgrow="ALWAYS">
                            <padding>
                               <Insets bottom="14.0" left="14.0" right="18.0" top="14.0" />
                            </padding>

@@ -4,9 +4,15 @@ import br.edu.ufersa.model.entities.Pedido;
 import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.view.MainApp;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -53,7 +59,24 @@ public class DashboardController {
 
     @FXML
     private void irParaNovoPedido() {
-        MainApp.telaPedidos();
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/modal-novo-pedido.fxml"));
+            Parent root = loader.load();
+
+            ModalNovoPedidoController controller = loader.getController();
+            controller.setOnSalvar(this::carregarResumoDoDia);
+
+            Stage modalStage = new Stage();
+            modalStage.setTitle("Novo Pedido");
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.setScene(new Scene(root));
+            modalStage.setMaximized(true);
+            modalStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -64,5 +87,10 @@ public class DashboardController {
     @FXML
     private void irParaVerEstoque() {
         MainApp.telaAdicionais();
+    }
+
+    @FXML
+    private void irParaNovoCliente() {
+        MainApp.telaClientes();
     }
 }

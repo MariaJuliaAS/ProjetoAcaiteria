@@ -28,6 +28,7 @@ public class ModalNovoPedidoController {
     @FXML private Label lblNenhumItem;
     @FXML private Label lblTotal;
     @FXML private Button btnFinalizar;
+    @FXML private Button btnVoltar;
 
     private final SistemaAcaiteria sistema = new SistemaAcaiteria();
 
@@ -272,6 +273,25 @@ public class ModalNovoPedidoController {
     private void fechar() {
         Stage stage = (Stage) btnFinalizar.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void voltar() {
+        if (itensPedido.isEmpty()) {
+            fechar();
+            return;
+        }
+
+        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacao.setTitle("Descartar pedido?");
+        confirmacao.setHeaderText(null);
+        confirmacao.setContentText("Você adicionou itens a este pedido. Se voltar agora, eles serão perdidos. Deseja continuar?");
+
+        confirmacao.showAndWait().ifPresent(resposta -> {
+            if (resposta == ButtonType.OK) {
+                fechar();
+            }
+        });
     }
 
     private void mostrarErro(String mensagem) {

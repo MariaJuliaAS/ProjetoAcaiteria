@@ -25,8 +25,10 @@
 
                 <VBox spacing="16.0" HBox.hgrow="ALWAYS">
                     <children>
-
-                        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Novo Pedido" />
+                        <HBox VBox.vgrow="NEVER" alignment="CENTER_LEFT" spacing="10.0">
+                            <Button fx:id="btnVoltar" mnemonicParsing="false" onAction="#voltar" style="-fx-background-color: transparent; -fx-text-fill: #6b2d7a; -fx-font-size: 13px; -fx-font-weight: bold; -fx-cursor: hand;" text="←  Voltar" />
+                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" text="Novo Pedido" />
+                        </HBox>
 
                         <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 10px; -fx-border-color: #e0e0e0; -fx-border-radius: 10px;">
                             <padding>
