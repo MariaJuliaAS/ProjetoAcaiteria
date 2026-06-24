@@ -54,8 +54,4 @@ public class Funcionario{
 	public void setTipo(String tipo){
 		this.tipo = tipo;
 	}
-
-	public void registrarPedido(Pedido pedido) {
-		System.out.println("Pedido registrado pelo funcionario: " + this.nome);
-	}	
 }
