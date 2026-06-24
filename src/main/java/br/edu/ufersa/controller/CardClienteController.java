@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
-public class CardClienteController {
+public class CardClienteController implements CardInterface<Cliente> {
 
     @FXML private Label lblNome;
     @FXML private Label lblTel;

@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CardFuncionarioController {
+public class CardFuncionarioController implements CardInterface<Funcionario> {
 
     @FXML private VBox cardRoot;
     @FXML private Label lblNome;

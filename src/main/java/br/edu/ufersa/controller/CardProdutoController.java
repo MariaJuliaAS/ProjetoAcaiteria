@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-public class CardProdutoController {
+public class CardProdutoController implements CardInterface<Produto> {
 
     @FXML private VBox cardRoot;
     @FXML private Label lblNome;

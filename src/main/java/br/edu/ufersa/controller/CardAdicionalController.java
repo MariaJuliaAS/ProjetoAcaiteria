@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-public class CardAdicionalController {
+public class CardAdicionalController implements CardInterface<Adicional> {
 
     @FXML private VBox cardRoot;
     @FXML private Label lblNome;
