@@ -2,8 +2,8 @@ package br.edu.ufersa.model.services;
 
 import br.edu.ufersa.model.DAO.ClienteDAO;
 import br.edu.ufersa.model.entities.Cliente;
+import br.edu.ufersa.model.exceptions.DadosInvalidosException;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 public class ClienteService {
@@ -19,7 +19,7 @@ public class ClienteService {
 
     public void editar(Cliente c) {
         if (c.getId() <= 0) {
-            throw new RuntimeException("Cliente sem ID para edição");
+            throw new DadosInvalidosException("Cliente sem ID para edição");
         }
 
         validarCliente(c);
@@ -29,10 +29,10 @@ public class ClienteService {
 
     public void excluir(Cliente c) {
         if (c == null) {
-            throw new RuntimeException("Cliente inválido para exclusão");}
+            throw new DadosInvalidosException("Cliente inválido para exclusão");}
 
         if (c.getId() <= 0) {
-            throw new RuntimeException("Cliente sem ID para exclusão");
+            throw new DadosInvalidosException("Cliente sem ID para exclusão");
         }
 
         clienteDAO.excluir(c);
@@ -41,26 +41,26 @@ public class ClienteService {
     private void validarCliente(Cliente c) {
 
         if (c == null) {
-            throw new RuntimeException("Cliente não pode ser nulo");
+            throw new DadosInvalidosException("Cliente não pode ser nulo");
         }
 
         if (c.getNome() == null || c.getNome().isEmpty()) {
-            throw new RuntimeException("Nome do cliente é obrigatório");
+            throw new DadosInvalidosException("Nome do cliente é obrigatório");
         }
 
         if (c.getTelefone() == null || c.getTelefone().isEmpty()) {
-            throw new RuntimeException("Telefone é obrigatório");
+            throw new DadosInvalidosException("Telefone é obrigatório");
         }
 
         if(c.getEndereco() == null || c.getEndereco().isEmpty()){
-            throw new RuntimeException("Endereço é obrigatório");
+            throw new DadosInvalidosException("Endereço é obrigatório");
         }
     }
 
     public List<Cliente> buscarPorNome(String nome) {
 
         if (nome == null || nome.isEmpty()) {
-            throw new RuntimeException("Nome inválido para busca");
+            throw new DadosInvalidosException("Nome inválido para busca");
         }
 
         return clienteDAO.buscarPorNome(nome);

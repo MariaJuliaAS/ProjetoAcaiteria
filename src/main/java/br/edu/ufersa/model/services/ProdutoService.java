@@ -1,9 +1,9 @@
 package br.edu.ufersa.model.services;
 
-import br.edu.ufersa.model.DAO.AdicionalDAO;
 import br.edu.ufersa.model.DAO.ProdutoDAO;
-import br.edu.ufersa.model.entities.Adicional;
 import br.edu.ufersa.model.entities.Produto;
+import br.edu.ufersa.model.exceptions.DadosInvalidosException;
+import br.edu.ufersa.model.exceptions.EntidadeNaoEncontradaException;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class ProdutoService {
         System.out.println("[SERVICE] Validando...");
         initProdutoDAO();
 
-        if (p == null) {throw new IllegalArgumentException("Adicional inválido.");}
-        if(p.getNome() == null){throw new IllegalArgumentException("Regra de Negócio Violada: O nome do produto não pode estar vazio!");}
-        if(p.getPreco() < 0){throw new IllegalArgumentException("Regra de Negócio Violada: O preço está inválido!");}
+        if (p == null) {throw new DadosInvalidosException("Adicional inválido.");}
+        if(p.getNome() == null){throw new DadosInvalidosException("Regra de Negócio Violada: O nome do produto não pode estar vazio!");}
+        if(p.getPreco() < 0){throw new DadosInvalidosException("Regra de Negócio Violada: O preço está inválido!");}
 
         System.out.println("[SERVICE] Tudo certo! Encaminhando para o DAO gravar no banco...");
         this.produtoDAO.cadastrar(p);
@@ -28,10 +28,10 @@ public class ProdutoService {
         System.out.println("[SERVICE] Validando...");
         initProdutoDAO();
 
-        if (p == null) {throw new IllegalArgumentException("Produto inválido.");}
-        if (p.getId() <= 0) {throw new IllegalArgumentException("ID inválido para edição!");}
-        if(p.getNome() == null){throw new IllegalArgumentException("Regra de Negócio Violada: O nome do produto não pode estar vazio!");}
-        if(p.getPreco() < 0){throw new IllegalArgumentException("Regra de Negócio Violada: O preço está inválido!");}
+        if (p == null) {throw new DadosInvalidosException("Produto inválido.");}
+        if (p.getId() <= 0) {throw new DadosInvalidosException("ID inválido para edição!");}
+        if(p.getNome() == null){throw new DadosInvalidosException("Regra de Negócio Violada: O nome do produto não pode estar vazio!");}
+        if(p.getPreco() < 0){throw new DadosInvalidosException("Regra de Negócio Violada: O preço está inválido!");}
 
         System.out.println("[SERVICE] Tudo certo! Encaminhando para o DAO editar no banco...");
         this.produtoDAO.editar(p);
@@ -40,11 +40,11 @@ public class ProdutoService {
     public void excluirProduto(Produto p){
         System.out.println("[SERVICE] Validando...");
 
-        if (p == null) {throw new IllegalArgumentException("Produto inválido.");}
-        if (p.getId() <= 0) {throw new IllegalArgumentException("ID inválido para exclusão!");}
+        if (p == null) {throw new DadosInvalidosException("Produto inválido.");}
+        if (p.getId() <= 0) {throw new DadosInvalidosException("ID inválido para exclusão!");}
         initProdutoDAO();
         Produto produtoExistente = this.produtoDAO.buscarPorId(p);
-        if(produtoExistente == null){throw new IllegalArgumentException("Produto não encontrado para exclusão.");}
+        if(produtoExistente == null){throw new EntidadeNaoEncontradaException("Produto não encontrado para exclusão.");}
 
         System.out.println("[SERVICE] Tudo certo! Encaminhando para o DAO deletar do banco...");
         this.produtoDAO.excluir(p);
@@ -53,11 +53,11 @@ public class ProdutoService {
     public Produto buscarPorId(Produto p){
         System.out.println("[SERVICE] Validando...");
 
-        if(p.getId() < 0){throw new IllegalArgumentException("ID inválido para produto.");}
+        if(p.getId() < 0){throw new DadosInvalidosException("ID inválido para produto.");}
 
         initProdutoDAO();
         Produto produtoExistente = this.produtoDAO.buscarPorId(p);
-        if(produtoExistente == null){throw new IllegalArgumentException("Produto não encontrado.");}
+        if(produtoExistente == null){throw new EntidadeNaoEncontradaException("Produto não encontrado.");}
 
         return produtoExistente;
     }

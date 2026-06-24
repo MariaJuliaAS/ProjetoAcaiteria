@@ -2,6 +2,8 @@ package br.edu.ufersa.model.services;
 
 import br.edu.ufersa.model.DAO.PedidoDAO;
 import br.edu.ufersa.model.entities.*;
+import br.edu.ufersa.model.exceptions.DadosInvalidosException;
+import br.edu.ufersa.model.exceptions.RegraDeNegocioException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class PedidoService {
 
     public void editar(Pedido p) {
         if (p.getId() <= 0) {
-            throw new RuntimeException("Pedido sem ID para edição");
+            throw new DadosInvalidosException("Pedido sem ID para edição");
         }
 
         validarPedido(p);
@@ -34,11 +36,11 @@ public class PedidoService {
     public void excluir(Pedido p) {
 
         if (p == null) {
-            throw new RuntimeException("Pedido inválido");
+            throw new DadosInvalidosException("Pedido inválido");
         }
 
         if (p.getId() <= 0) {
-            throw new RuntimeException("Pedido sem ID para exclusão");
+            throw new DadosInvalidosException("Pedido sem ID para exclusão");
         }
 
         pedidoDAO.excluir(p);
@@ -47,32 +49,32 @@ public class PedidoService {
     private void validarPedido(Pedido p) {
 
         if (p == null) {
-            throw new RuntimeException("Pedido não pode ser nulo");
+            throw new DadosInvalidosException("Pedido não pode ser nulo");
         }
 
         if (p.getCliente() == null) {
-            throw new RuntimeException("Pedido precisa de cliente");
+            throw new DadosInvalidosException("Pedido precisa de cliente");
         }
 
         if (p.getFormaPagamento() == null || p.getFormaPagamento().isBlank()) {
-            throw new RuntimeException("Forma de pagamento obrigatória");
+            throw new DadosInvalidosException("Forma de pagamento obrigatória");
         }
     }
 
     private void validarItens(Pedido p) {
 
         if (p.getItensPedido() == null || p.getItensPedido().isEmpty()) {
-            throw new RuntimeException("Pedido deve ter pelo menos 1 item");
+            throw new DadosInvalidosException("Pedido deve ter pelo menos 1 item");
         }
 
         for (ItemPedido item : p.getItensPedido()) {
 
             if (item.getProduto() == null) {
-                throw new RuntimeException("Item sem produto");
+                throw new DadosInvalidosException("Item sem produto");
             }
 
             if (item.getQuantidade() <= 0) {
-                throw new RuntimeException("Quantidade inválida");
+                throw new DadosInvalidosException("Quantidade inválida");
             }
         }
     }
@@ -84,7 +86,7 @@ public class PedidoService {
             for (Adicional a : item.getAdicionaisEscolhidos()) {
 
                 if (a.getQtdEstoque() <= 0) {
-                    throw new RuntimeException("Sem estoque do adicional: " + a.getNome());
+                    throw new RegraDeNegocioException("Sem estoque do adicional: " + a.getNome());
                 }
 
                 a.setQtdEstoque(a.getQtdEstoque() - 1);
@@ -113,7 +115,7 @@ public class PedidoService {
     public List<Pedido> buscarPorData(LocalDate data) {
 
         if (data == null) {
-            throw new RuntimeException("Data inválida");
+            throw new DadosInvalidosException("Data inválida");
         }
 
         return pedidoDAO.buscarPorData(data);
@@ -122,11 +124,11 @@ public class PedidoService {
     public List<Pedido> buscarPorPeriodo(LocalDate inicio, LocalDate fim) {
 
         if (inicio == null) {
-            throw new RuntimeException("Data inválida");
+            throw new DadosInvalidosException("Data inválida");
         }
 
         if (fim == null) {
-            throw new RuntimeException("Data inválida");
+            throw new DadosInvalidosException("Data inválida");
         }
 
         return pedidoDAO.buscarPorPeriodo(inicio, fim);
@@ -135,7 +137,7 @@ public class PedidoService {
     public List<Pedido> buscarPorCliente(Cliente c) {
 
         if (c.getId() <= 0) {
-            throw new RuntimeException("Cliente inválido");
+            throw new DadosInvalidosException("Cliente inválido");
         }
 
         return pedidoDAO.buscarPorCliente(c);
@@ -144,7 +146,7 @@ public class PedidoService {
     public List<Pedido> buscarPorProduto(Produto p) {
 
         if (p.getId() <= 0) {
-            throw new RuntimeException("Produto inválido");
+            throw new DadosInvalidosException("Produto inválido");
         }
 
         return pedidoDAO.buscarPorProduto(p);
@@ -153,7 +155,7 @@ public class PedidoService {
     public Pedido buscarPorId(int id) {
 
         if (id <= 0) {
-            throw new RuntimeException("ID inválido");
+            throw new DadosInvalidosException("ID inválido");
         }
 
         return pedidoDAO.buscarPorId(id);
