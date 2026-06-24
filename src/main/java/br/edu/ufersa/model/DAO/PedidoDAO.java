@@ -2,14 +2,16 @@ package br.edu.ufersa.model.DAO;
 
 import br.edu.ufersa.model.connectionFactory.ConnectionFactory;
 import br.edu.ufersa.model.entities.*;
+import br.edu.ufersa.model.interfaces.DAOInterface;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PedidoDAO {
+public class PedidoDAO implements DAOInterface<Pedido> {
 
+    @Override
     public void cadastrar(Pedido p) {
         String sql = "INSERT INTO pedido (data, forma_pagamento, cliente_id) VALUES (?, ?, ?)";
 
@@ -34,6 +36,7 @@ public class PedidoDAO {
         }
     }
 
+    @Override
     public void editar(Pedido p) {
         String sql = "UPDATE pedido SET data = ?, forma_pagamento = ?, cliente_id = ? WHERE id = ?";
         Connection con = ConnectionFactory.getConnection();
@@ -51,6 +54,7 @@ public class PedidoDAO {
         }
     }
 
+    @Override
     public void excluir(Pedido p) {
         String sql = "DELETE FROM pedido WHERE id = ?";
         Connection con = ConnectionFactory.getConnection();
@@ -254,6 +258,7 @@ public class PedidoDAO {
         return null;
     }
 
+    @Override
     public List<Pedido> buscarTodos() {
         String sql = "SELECT p.*, c.nome, c.telefone, c.endereco " +
                 "FROM pedido p " +

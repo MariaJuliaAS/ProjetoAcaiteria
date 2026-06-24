@@ -3,14 +3,16 @@ package br.edu.ufersa.model.DAO;
 import br.edu.ufersa.model.connectionFactory.ConnectionFactory;
 import br.edu.ufersa.model.entities.Cliente;
 import br.edu.ufersa.model.entities.Produto;
+import br.edu.ufersa.model.interfaces.DAOInterface;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDAO {
+public class ClienteDAO implements DAOInterface<Cliente> {
 
-    public Cliente cadastrar(Cliente cliente) {
+    @Override
+    public void cadastrar(Cliente cliente) {
         Connection con = ConnectionFactory.getConnection();
 
         String sql = "INSERT INTO cliente (nome,telefone,endereco)" +
@@ -31,9 +33,9 @@ public class ClienteDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return cliente;
     }
 
+    @Override
     public void editar(Cliente cliente) {
         String sql = "UPDATE cliente SET nome = ?, telefone = ?, endereco = ? WHERE id = ?";
         Connection con = ConnectionFactory.getConnection();
@@ -51,6 +53,7 @@ public class ClienteDAO {
         }
     }
 
+    @Override
     public void excluir(Cliente cliente) {
         String sql = "DELETE FROM cliente WHERE id = ?";
         Connection con = ConnectionFactory.getConnection();
@@ -93,6 +96,7 @@ public class ClienteDAO {
         return clientes;
     }
 
+    @Override
     public List<Cliente> buscarTodos(){
         String sql = "SELECT * FROM cliente";
         List<Cliente> clientes = new ArrayList<>();

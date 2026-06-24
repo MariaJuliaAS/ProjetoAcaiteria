@@ -2,6 +2,7 @@ package br.edu.ufersa.model.DAO;
 
 import br.edu.ufersa.model.connectionFactory.ConnectionFactory;
 import br.edu.ufersa.model.entities.Funcionario;
+import br.edu.ufersa.model.interfaces.DAOInterface;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuncionarioDAO {
+public class FuncionarioDAO implements DAOInterface<Funcionario> {
 
+    @Override
     public void cadastrar(Funcionario f){
         String sql = "INSERT INTO funcionario (nome, login, senha, tipo) VALUES (?, ?, ?, ?)";
         Connection conn = ConnectionFactory.getConnection();
@@ -36,6 +38,7 @@ public class FuncionarioDAO {
         }
     }
 
+    @Override
     public void editar(Funcionario f){
         String sql = "UPDATE funcionario SET nome = ?, login = ?, senha = ?, tipo = ? WHERE id = ?";
         Connection conn = ConnectionFactory.getConnection();
@@ -54,6 +57,7 @@ public class FuncionarioDAO {
         }
     }
 
+    @Override
     public void excluir(Funcionario f){
         String sql = "DELETE FROM funcionario WHERE id = ?";
         Connection conn = ConnectionFactory.getConnection();
@@ -68,6 +72,7 @@ public class FuncionarioDAO {
         }
     }
 
+    @Override
     public List<Funcionario> buscarTodos(){
         String sql = "SELECT * FROM funcionario";
         List<Funcionario> funcionarios = new ArrayList<>();

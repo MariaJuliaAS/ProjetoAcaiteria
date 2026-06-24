@@ -1,6 +1,4 @@
-package br.edu.ufersa.controller;
-
-import br.edu.ufersa.model.entities.Funcionario;
+package br.edu.ufersa.model.interfaces;
 
 public interface CardInterface<T> {
     void setDados(T entidade);

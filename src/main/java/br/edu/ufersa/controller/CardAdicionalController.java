@@ -2,6 +2,7 @@ package br.edu.ufersa.controller;
 
 import br.edu.ufersa.facade.SistemaAcaiteria;
 import br.edu.ufersa.model.entities.Adicional;
+import br.edu.ufersa.model.interfaces.CardInterface;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

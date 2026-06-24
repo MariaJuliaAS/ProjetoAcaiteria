@@ -2,6 +2,7 @@ package br.edu.ufersa.model.DAO;
 
 import br.edu.ufersa.model.connectionFactory.ConnectionFactory;
 import br.edu.ufersa.model.entities.Adicional;
+import br.edu.ufersa.model.interfaces.DAOInterface;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdicionalDAO {
+public class AdicionalDAO implements DAOInterface<Adicional> {
 
+    @Override
     public void cadastrar(Adicional a){
         String sql = "INSERT INTO adicional (nome, preco, qtd_estoque) VALUES (?, ?, ?)";
         Connection conn = ConnectionFactory.getConnection();
@@ -35,6 +37,7 @@ public class AdicionalDAO {
         }
     }
 
+    @Override
     public void editar(Adicional a){
         String sql = "UPDATE adicional SET nome = ?, preco = ?, qtd_estoque = ? WHERE id = ?";
         Connection conn = ConnectionFactory.getConnection();
@@ -52,6 +55,7 @@ public class AdicionalDAO {
         }
     }
 
+    @Override
     public void excluir(Adicional a){
         String sql = "DELETE FROM adicional WHERE id = ?";
         Connection conn = ConnectionFactory.getConnection();
@@ -92,6 +96,7 @@ public class AdicionalDAO {
         }
     }
 
+    @Override
     public List<Adicional> buscarTodos(){
         String sql = "SELECT * FROM adicional";
         Connection conn = ConnectionFactory.getConnection();

@@ -14,4 +14,6 @@ module ProjetoAcaiteria {
     exports br.edu.ufersa.model.entities;
     exports br.edu.ufersa.facade;
     opens br.edu.ufersa.facade to javafx.fxml, javafx.graphics;
+    exports br.edu.ufersa.model.interfaces;
+    opens br.edu.ufersa.model.interfaces to javafx.fxml, javafx.graphics;
 }

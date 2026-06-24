@@ -3,6 +3,7 @@ package br.edu.ufersa.model.DAO;
 import br.edu.ufersa.model.connectionFactory.ConnectionFactory;
 import br.edu.ufersa.model.entities.Adicional;
 import br.edu.ufersa.model.entities.Produto;
+import br.edu.ufersa.model.interfaces.DAOInterface;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoDAO {
+public class ProdutoDAO implements DAOInterface<Produto> {
+    @Override
     public void cadastrar(Produto p){
         String sql = "INSERT INTO produto (nome, preco) VALUES (?, ?)";
         Connection conn = ConnectionFactory.getConnection();
@@ -35,6 +37,7 @@ public class ProdutoDAO {
         }
     }
 
+    @Override
     public void editar(Produto p){
         String sql =  "UPDATE produto SET nome=?, preco=? WHERE id=?";
         Connection conn = ConnectionFactory.getConnection();
@@ -55,6 +58,7 @@ public class ProdutoDAO {
         }
     }
 
+    @Override
     public void excluir(Produto p){
         String sql = "DELETE FROM produto WHERE id=?";
         removerAdicionaisDisponiveis(p);
@@ -72,6 +76,7 @@ public class ProdutoDAO {
         }
     }
 
+    @Override
     public List<Produto> buscarTodos(){
         String sql = "SELECT * FROM produto";
         List<Produto> produtos = new ArrayList<>();
